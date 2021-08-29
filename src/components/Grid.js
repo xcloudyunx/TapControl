@@ -14,7 +14,6 @@ export default function Grid(props) {
 	const [iconButtons, setIconButtons] = useState([[require("../assets/favicon.png"),require("../assets/favicon.png")],[require("../assets/favicon.png"),require("../assets/favicon.png")],[require("../assets/favicon.png"),require("../assets/favicon.png")]]);
 	
 	const {portrait} = useDeviceOrientation();
-	alert(portrait);
 	
 	return (
 		<View style={[
