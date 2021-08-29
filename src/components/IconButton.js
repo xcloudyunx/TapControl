@@ -5,15 +5,26 @@ import {
 	View,
 	TouchableHighlight,
 	ImageBackground,
+	Dimensions,
 } from 'react-native';
 
 import colors from "../config/colors";
 import constants from "../config/constants";
 
 export default function IconButton(props) {
+	const window = Dimensions.get("window");
+	const buttonDim = Math.min(Math.max(window.width, window.height)/4, Math.min(window.width, window.height)/3);
+	
+	const handlePress = () => {
+		alert("pressed");
+	}
+	
 	return (
-		<View style={styles.container}>
-			<TouchableHighlight style={styles.touch} onPress={() => alert("test")}>
+		<View style={{
+			width: buttonDim,
+			height: buttonDim,
+		}}>
+			<TouchableHighlight style={styles.touch} onPress={handlePress}>
 				<View style={styles.button}>
 					<ImageBackground
 						source={props.source}

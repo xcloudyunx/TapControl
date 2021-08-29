@@ -3,7 +3,6 @@ import {
 	StyleSheet,
 	View,
 } from 'react-native';
-import {useDeviceOrientation} from "@react-native-community/hooks";
 
 import colors from "../config/colors";
 import Grid from "../components/Grid";
