@@ -1,3 +1,5 @@
-export default {
-	iconButtonRadius: 20,
-}
+const constants = {
+	iconButtonRadius: "20%",
+};
+
+export default constants;

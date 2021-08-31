@@ -8,7 +8,7 @@ import {useDeviceOrientation} from "@react-native-community/hooks";
 import colors from "../config/colors";
 import IconButton from "./IconButton";
 
-export default function Grid(props) {
+export default function Row(props) {
 	const {portrait} = useDeviceOrientation();
 	
 	return (
@@ -18,7 +18,7 @@ export default function Grid(props) {
 		]}>
 			{props.row.map((col, j) => {
 				return (
-					<IconButton key={j} source={col} />
+					<IconButton key={j} id={props.id*props.numOfCols+j} source={col} size={props.size}/>
 				)
 			})}
 		</View>
@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
 	container: {
 		justifyContent: "space-evenly",
 		alignItems: "center",
-		// backgroundColor: colors.secondary,
+		backgroundColor: colors.secondary,
 	},
 });
