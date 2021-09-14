@@ -18,7 +18,13 @@ export default function Row(props) {
 		]}>
 			{props.row.map((col, j) => {
 				return (
-					<IconButton key={j} id={props.id*props.numOfCols+j} source={col} size={props.size}/>
+					<IconButton
+						key={j}
+						id={props.id*props.numOfCols+j}
+						source={col}
+						buttonDim={props.buttonDim}
+						onPress={props.onPress}
+					/>
 				)
 			})}
 		</View>
@@ -29,6 +35,6 @@ const styles = StyleSheet.create({
 	container: {
 		justifyContent: "space-evenly",
 		alignItems: "center",
-		backgroundColor: colors.secondary,
+		// backgroundColor: colors.secondary,
 	},
 });

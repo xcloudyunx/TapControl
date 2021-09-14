@@ -10,17 +10,16 @@ import colors from "../config/colors";
 import constants from "../config/constants";
 
 export default function IconButton(props) {
-	const handlePress = () => {
-		console.log("pressed ", props.id);
-	}
-	
 	return (
 		<View style={{
-			width: props.size,
-			height: props.size,
+			width: props.buttonDim,
+			height: props.buttonDim,
 		}}>
-			<TouchableHighlight style={styles.touch} onPress={handlePress}>
-				<View style={styles.button}>
+			<TouchableHighlight
+				style={[styles.touch, {borderRadius: props.buttonDim/8}]}
+				onPress={() => {props.onPress(props.id)}}
+			>
+				<View style={[styles.button, {borderRadius: props.buttonDim/8}]}>
 					<Image
 						source={props.source}
 						style={styles.image}
@@ -35,7 +34,6 @@ const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		backgroundColor: colors.primary,
-		borderRadius: constants.iconButtonRadius,
 		padding: "5%",
 	},
 	image: {
@@ -45,6 +43,5 @@ const styles = StyleSheet.create({
 	},
 	touch: {
 		flex: 1,
-		borderRadius: constants.iconButtonRadius,
 	},
 });
