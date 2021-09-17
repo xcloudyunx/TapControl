@@ -21,7 +21,7 @@ export default function IconButton(props) {
 			>
 				<View style={[styles.button, {borderRadius: props.buttonDim/8}]}>
 					<Image
-						source={props.source}
+						source={require("../assets/favicon.png")}
 						style={styles.image}
 					/>
 				</View>
