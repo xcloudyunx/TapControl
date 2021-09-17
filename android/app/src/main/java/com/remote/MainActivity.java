@@ -1,4 +1,4 @@
-package com.remotev2;
+package com.remote;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "remotev2";
+    return "remote";
   }
 }

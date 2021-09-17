@@ -5,7 +5,7 @@ import {
 	StatusBar,
 	} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import net from "net";
+import TcpSocket from "react-native-tcp-socket";
 
 import constants from "./src/config/constants";
 
@@ -32,10 +32,12 @@ export default function App() {
 	
 	useEffect(() => {
 		const IP = "192.168.1.10";
-		const client = new net.Socket();
-		client.connect(constants.PORT, IP, () => {
-			console.log("connected")
-		});
+		const client = TcpSocket.createConnection(
+			{port: constants.PORT, host: IP},
+			() => {
+				console.log("connected")
+			}
+		);
 	});
 	
 	
