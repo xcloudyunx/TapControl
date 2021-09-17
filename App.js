@@ -17,56 +17,83 @@ import HomeScreen from "./src/screens/HomeScreen";
 import ConnectionScreen from "./src/screens/ConnectionScreen";
 
 export default function App() {
+	const [hash, setHash] = useState();
 	const [numOfRows, setNumOfRows] = useState();
 	const [numOfCols, setNumOfCols] = useState();
 	const [numOfPages, setNumOfPages] = useState();
 	const [iconButtons, setIconButtons] = useState();
-	const [testflag, setTestFlag] = useState(0);
+	const [readyToRender, setReadyToRender] = useState(0);
 	
 	useEffect(() => {
-		fetchData("numOfRows", 4).then((r) => {
-			setNumOfRows(r);
-			fetchData("numOfCols", 2).then((c) => {
-				setNumOfCols(c);
-				fetchData("numOfPages", 1).then((p) => {
-					setNumOfPages(p);
-					const defaultIB = () => {
-						const iB = [[]];
-						for (let k=1; k<=numOfPages; k++){
-							iB[k] = [];
-							for (let i=0; i<numOfRows; i++) {
-								iB[k][i] = [];
-								for (let j=0; j<numOfCols; j++) {
-									iB[k][i][j] = "favicon";
+		const IP = "192.168.1.10";
+		const client = TcpSocket.createConnection(
+			{
+				port: constants.PORT,
+				host: IP
+			},
+			() => {
+				client.setEncoding("utf8");
+				console.log("connected");
+				client.write("hello");
+			}
+		);
+		client.on("data", (data) => {
+			console.log(data);
+			obj = JSON.parse(data);
+		});
+		client.on("error", (error) => {
+			alert("an error occured with the socket");
+		});
+		client.on("close", () => {
+			alert("socket closed");
+		});
+		
+		fetchData("hash").then((h) => {
+			setHash(h);
+			fetchData("numOfRows", 4).then((r) => {
+				setNumOfRows(r);
+				fetchData("numOfCols", 2).then((c) => {
+					setNumOfCols(c);
+					fetchData("numOfPages", 1).then((p) => {
+						setNumOfPages(p);
+						const defaultIB = () => {
+							const iB = [[]];
+							for (let k=1; k<=numOfPages; k++){
+								iB[k] = [];
+								for (let i=0; i<numOfRows; i++) {
+									iB[k][i] = [];
+									for (let j=0; j<numOfCols; j++) {
+										iB[k][i][j] = "favicon";
+									}
 								}
 							}
-						}
-						return iB;
-					};
-					fetchData("iconButtons", defaultIB()).then((ib) => {
-						setIconButtons(ib);
-						setTestFlag(1);
+							return iB;
+						};
+						fetchData("iconButtons", defaultIB()).then((ib) => {
+							setIconButtons(ib);
+							setReadyToRender(1);
+						});
 					});
 				});
 			});
-		})
+		});
 	}, []);
 	
-	// useEffect(() => {
-		// storeData("numOfRows", numOfRows);
-	// }, [numOfRows]);
-	// useEffect(() => {
-		// storeData("numOfCols", numOfCols);
-	// }, [numOfCols]);
-	// useEffect(() => {
-		// storeData("numOfPages", numOfPages);
-	// }, [numOfPages]);
-	// useEffect(() => {
-		// storeData("iconButtons", iconButtons);
-	// }, [iconButtons]);
+	useEffect(() => {
+		storeData("numOfRows", numOfRows);
+	}, [numOfRows]);
+	useEffect(() => {
+		storeData("numOfCols", numOfCols);
+	}, [numOfCols]);
+	useEffect(() => {
+		storeData("numOfPages", numOfPages);
+	}, [numOfPages]);
+	useEffect(() => {
+		storeData("iconButtons", iconButtons);
+	}, [iconButtons]);
 	
 	useEffect(() => {
-		if (testflag) {
+		if (readyToRender) {
 			const iB = [...iconButtons.slice(0, numOfPages+1)];
 			for (let k=1; k<=numOfPages; k++){
 				if (k >= iB.length) {
@@ -89,26 +116,12 @@ export default function App() {
 			}
 			setIconButtons(iB);
 		}
-	}, [testflag, numOfRows, numOfCols, numOfPages]);
-	
-	// useEffect(() => {
-		// const IP = "192.168.1.10";
-		// const client = TcpSocket.createConnection(
-			// {
-				// port: constants.PORT,
-				// host: IP
-			// },
-			// () => {
-				// console.log("connected")
-			// }
-		// );
-	// }, []);
-	
+	}, [readyToRender, numOfRows, numOfCols, numOfPages]);
 	
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar />
-			{testflag ? <HomeScreen
+			{readyToRender ? <HomeScreen
 				numOfRows={numOfRows}
 				numOfCols={numOfCols}
 				numOfPages={numOfPages}
@@ -125,13 +138,13 @@ const styles = StyleSheet.create({
 });
 
 const storeData = async (key, value) => {
-	console.log("key "+key);
-	console.log(value);
-	try {
-		const jsonValue = JSON.stringify(value);
-		await AsyncStorage.setItem(key, jsonValue);
-	} catch (e) {
-		alert("storing data error "+key);
+	if (value) {
+		try {
+			const jsonValue = JSON.stringify(value);
+			await AsyncStorage.setItem(key, jsonValue);
+		} catch (e) {
+			alert("storing data error "+key);
+		}
 	}
 };
 const fetchData = async (key, defaultValue=null) => {
