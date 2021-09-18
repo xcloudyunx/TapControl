@@ -10,6 +10,14 @@ import colors from "../config/colors";
 import constants from "../config/constants";
 
 export default function IconButton(props) {
+	let source;
+	// try {
+		// source = require("../assets/"+props.className.toString()+"/"+props.id.toString()+"/image.png");
+	// } catch (err) {
+		// source = null;
+	// }
+	source = null;
+	
 	return (
 		<View style={{
 			width: props.buttonDim,
@@ -21,7 +29,7 @@ export default function IconButton(props) {
 			>
 				<View style={[styles.button, {borderRadius: props.buttonDim/8}]}>
 					<Image
-						source={require("../assets/favicon.png")}
+						source={source}
 						style={styles.image}
 					/>
 				</View>

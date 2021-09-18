@@ -16,12 +16,12 @@ export default function Row(props) {
 			styles.container,
 			{flexDirection: portrait ? "row" : "column-reverse",},
 		]}>
-			{props.row.map((col, j) => {
+			{[...Array(props.numOfCols)].map((x, j) => {
 				return (
 					<IconButton
 						key={j}
 						id={props.id*props.numOfCols+j}
-						source={col}
+						className={props.className}
 						buttonDim={props.buttonDim}
 						onPress={props.onPress}
 					/>

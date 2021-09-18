@@ -22,7 +22,6 @@ export default function HomeScreen(props) {
 				numOfRows={props.numOfRows}
 				numOfCols={props.numOfCols}
 				numOfPages={props.numOfPages}
-				iconButtons={props.iconButtons}
 				currentPage={currentPage}
 				onIconButtonPress={handleIconButtonPress}
 				onPageChange={handlePageChange}

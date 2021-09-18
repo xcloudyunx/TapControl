@@ -22,13 +22,13 @@ export default function Grid(props) {
 			styles.container,
 			{flexDirection: portrait ? "column" : "row",}
 		]}>
-			{props.page.map((row, i) => {
+			{[...Array(props.numOfRows)].map((x, i) => {
 				return(
 					<Row
 						key={i}
 						id={i}
+						className={props.className}
 						numOfCols={props.numOfCols}
-						row={row}
 						buttonDim={buttonDim}
 						onPress={(id) => {props.onPress(props.className, id)}}
 					/>

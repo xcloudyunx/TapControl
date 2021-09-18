@@ -70,7 +70,6 @@ export default function MainBar(props) {
 					className={props.currentPage-1}
 					numOfRows={props.numOfRows}
 					numOfCols={props.numOfCols}
-					page={props.iconButtons[props.currentPage-1]}
 					onPress={props.onIconButtonPress}
 				/>
 			);
@@ -89,7 +88,6 @@ export default function MainBar(props) {
 					className={props.currentPage+1}
 					numOfRows={props.numOfRows}
 					numOfCols={props.numOfCols}
-					page={props.iconButtons[props.currentPage+1]}
 					onPress={props.onIconButtonPress}
 				/>
 			);
@@ -120,7 +118,6 @@ export default function MainBar(props) {
 				className={props.currentPage}
 				numOfRows={props.numOfRows}
 				numOfCols={props.numOfCols}
-				page={props.iconButtons[props.currentPage]}
 				onPress={props.onIconButtonPress}
 			/>
 			{renderNextGrid()}

@@ -21,32 +21,31 @@ export default function App() {
 	const [numOfRows, setNumOfRows] = useState();
 	const [numOfCols, setNumOfCols] = useState();
 	const [numOfPages, setNumOfPages] = useState();
-	const [iconButtons, setIconButtons] = useState();
 	const [readyToRender, setReadyToRender] = useState(0);
 	
 	useEffect(() => {
-		const IP = "192.168.1.10";
-		const client = TcpSocket.createConnection(
-			{
-				port: constants.PORT,
-				host: IP
-			},
-			() => {
-				client.setEncoding("utf8");
-				console.log("connected");
-				client.write("hello");
-			}
-		);
-		client.on("data", (data) => {
-			console.log(data);
-			obj = JSON.parse(data);
-		});
-		client.on("error", (error) => {
-			alert("an error occured with the socket");
-		});
-		client.on("close", () => {
-			alert("socket closed");
-		});
+		// const IP = "192.168.1.10";
+		// const client = TcpSocket.createConnection(
+			// {
+				// port: constants.PORT,
+				// host: IP
+			// },
+			// () => {
+				// client.setEncoding("utf8");
+				// console.log("connected");
+				// client.write("hello");
+			// }
+		// );
+		// client.on("data", (data) => {
+			// console.log(data);
+			// obj = JSON.parse(data);
+		// });
+		// client.on("error", (error) => {
+			// alert("an error occured with the socket");
+		// });
+		// client.on("close", () => {
+			// alert("socket closed");
+		// });
 		
 		fetchData("hash").then((h) => {
 			setHash(h);
@@ -56,23 +55,7 @@ export default function App() {
 					setNumOfCols(c);
 					fetchData("numOfPages", 1).then((p) => {
 						setNumOfPages(p);
-						const defaultIB = () => {
-							const iB = [[]];
-							for (let k=1; k<=numOfPages; k++){
-								iB[k] = [];
-								for (let i=0; i<numOfRows; i++) {
-									iB[k][i] = [];
-									for (let j=0; j<numOfCols; j++) {
-										iB[k][i][j] = "favicon";
-									}
-								}
-							}
-							return iB;
-						};
-						fetchData("iconButtons", defaultIB()).then((ib) => {
-							setIconButtons(ib);
-							setReadyToRender(1);
-						});
+						setReadyToRender(1);
 					});
 				});
 			});
@@ -88,35 +71,6 @@ export default function App() {
 	useEffect(() => {
 		storeData("numOfPages", numOfPages);
 	}, [numOfPages]);
-	useEffect(() => {
-		storeData("iconButtons", iconButtons);
-	}, [iconButtons]);
-	
-	useEffect(() => {
-		if (readyToRender) {
-			const iB = [...iconButtons.slice(0, numOfPages+1)];
-			for (let k=1; k<=numOfPages; k++){
-				if (k >= iB.length) {
-					iB[k] = [];
-				} else {
-					iB[k] = [...iconButtons[k].slice(0, numOfRows)];
-				}
-				for (let i=0; i<numOfRows; i++) {
-					if (i >= iB[k].length) {
-						iB[k][i] = [];
-					} else {
-						iB[k][i] = [...iconButtons[k][i].slice(0, numOfCols)];
-					}
-					for (let j=0; j<numOfCols; j++) {
-						if (j >= iB[k][i].length) {
-							iB[k][i][j] = require("./src/assets/favicon.png");
-						}
-					}
-				}
-			}
-			setIconButtons(iB);
-		}
-	}, [readyToRender, numOfRows, numOfCols, numOfPages]);
 	
 	return (
 		<SafeAreaView style={styles.container}>
@@ -125,7 +79,6 @@ export default function App() {
 				numOfRows={numOfRows}
 				numOfCols={numOfCols}
 				numOfPages={numOfPages}
-				iconButtons={iconButtons}
 			/> : <View />}
 		</SafeAreaView>
 	);
