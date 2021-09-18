@@ -24,28 +24,38 @@ export default function App() {
 	const [readyToRender, setReadyToRender] = useState(0);
 	
 	useEffect(() => {
-		// const IP = "192.168.1.10";
-		// const client = TcpSocket.createConnection(
-			// {
-				// port: constants.PORT,
-				// host: IP
-			// },
-			// () => {
-				// client.setEncoding("utf8");
-				// console.log("connected");
-				// client.write("hello");
-			// }
-		// );
-		// client.on("data", (data) => {
-			// console.log(data);
-			// obj = JSON.parse(data);
-		// });
-		// client.on("error", (error) => {
-			// alert("an error occured with the socket");
-		// });
-		// client.on("close", () => {
-			// alert("socket closed");
-		// });
+		const IP = "192.168.1.10";
+		const client = TcpSocket.createConnection(
+			{
+				port: constants.PORT,
+				host: IP
+			},
+			() => {
+				client.setEncoding("utf8");
+				console.log("connected");
+			}
+		);
+		client.on("data", (data) => {
+			console.log(data);
+			obj = JSON.parse(data);
+			if (obj.hash) {
+				if (obj.hash == hash) {
+					client.write("True");
+				} else {
+					client.write("False");
+				}
+			} else if (obj.numOfRows) {
+				setNumOfRows(obj.numOfRows);
+				setNumOfCols(obj.numOfCols);
+				setNumOfPages(obj.numOfPages);
+			}
+		});
+		client.on("error", (error) => {
+			alert("an error occured with the socket");
+		});
+		client.on("close", () => {
+			alert("socket closed");
+		});
 		
 		fetchData("hash").then((h) => {
 			setHash(h);
