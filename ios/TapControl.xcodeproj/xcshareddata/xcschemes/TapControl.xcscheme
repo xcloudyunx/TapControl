@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "remote.app"
-               BlueprintName = "remote"
-               ReferencedContainer = "container:remote.xcodeproj">
+               BuildableName = "TapControl.app"
+               BlueprintName = "TapControl"
+               ReferencedContainer = "container:TapControl.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "remoteTests.xctest"
-               BlueprintName = "remoteTests"
-               ReferencedContainer = "container:remote.xcodeproj">
+               BuildableName = "TapControlTests.xctest"
+               BlueprintName = "TapControlTests"
+               ReferencedContainer = "container:TapControl.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "remote.app"
-            BlueprintName = "remote"
-            ReferencedContainer = "container:remote.xcodeproj">
+            BuildableName = "TapControl.app"
+            BlueprintName = "TapControl"
+            ReferencedContainer = "container:TapControl.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "remote.app"
-            BlueprintName = "remote"
-            ReferencedContainer = "container:remote.xcodeproj">
+            BuildableName = "TapControl.app"
+            BlueprintName = "TapControl"
+            ReferencedContainer = "container:TapControl.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
