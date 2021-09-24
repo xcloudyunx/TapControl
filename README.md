@@ -1,4 +1,4 @@
-# remote
+# tap control
  
 require @react-native-community/hooks
 
