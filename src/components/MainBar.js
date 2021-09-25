@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
 	Animated,
 	Dimensions,
@@ -6,13 +6,18 @@ import {
 	StyleSheet,
 	View,
 } from 'react-native';
+import {useDeviceOrientation} from "@react-native-community/hooks";
 
 import colors from "../config/colors";
 import Grid from "../components/Grid";
 
 export default function MainBar(props) {
-	const screenWidth = Dimensions.get("window").width;
-	const screenHeight = Dimensions.get("window").height;
+	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
+	const [screenHeight, setScreenHeight] = useState(Dimensions.get("window").height);
+	Dimensions.addEventListener("change", () => {
+		setScreenWidth(Dimensions.get("window").width);
+		setScreenHeight(Dimensions.get("window").height);
+	});
 	
 	const pan = new Animated.Value(0);
 	let time = 0;
