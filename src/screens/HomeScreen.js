@@ -8,13 +8,9 @@ import MainBar from "../components/MainBar";
 export default function HomeScreen(props) {
 	const [currentPage, setCurrentPage] = useState(1);
 	
-	const handleIconButtonPress = (page, id) => {
-		alert(page.toString()+" "+id.toString());
-	};
-	
 	const handlePageChange = (page) => {
 		setCurrentPage(page);
-	}
+	};
 	
 	return (
 		<View style={styles.container}>
@@ -23,7 +19,7 @@ export default function HomeScreen(props) {
 				numOfCols={props.numOfCols}
 				numOfPages={props.numOfPages}
 				currentPage={currentPage}
-				onIconButtonPress={handleIconButtonPress}
+				onIconButtonPress={props.onIconButtonPress}
 				onPageChange={handlePageChange}
 			/>
 		</View>
