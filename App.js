@@ -29,7 +29,7 @@ export default function App() {
 			if (data.state) {
 				syncGrid(data.state);
 			} else if (data.imageName) {
-				syncImage(data.imageName, data.imageData)
+				syncImage(data.imageName, Buffer.from(data.imageData, "base64").toString());
 			}
 		};
 		
@@ -40,6 +40,7 @@ export default function App() {
 		};
 		
 		const syncImage = (imageName, imageData) => {
+			console.log(imageData);
 			if (imageData) {
 				// create/update the image
 			} else {
