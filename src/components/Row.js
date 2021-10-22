@@ -24,6 +24,7 @@ export default function Row(props) {
 						className={props.className}
 						buttonDim={props.buttonDim}
 						onPress={props.onPress}
+						updatedIconButton={props.updatedIconButton == props.id*props.numOfCols+j ? true : false}
 					/>
 				)
 			})}

@@ -1,22 +1,30 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
 	StyleSheet,
 	View,
 	TouchableHighlight,
 	Image,
 } from 'react-native';
+import RNFS from "react-native-fs";
 
 import colors from "../config/colors";
 import constants from "../config/constants";
 
 export default function IconButton(props) {
-	let source;
-	// try {
-		// source = require("../assets/"+props.className.toString()+"/"+props.id.toString()+"/image.png");
-	// } catch (err) {
-		// source = null;
-	// }
-	source = null;
+	const [source, setSource] = useState();
+	
+	useEffect(() => {
+		if (props.updatedIconButton) {
+			const path = "file://"+RNFS.DocumentDirectoryPath+"/"+props.className.toString()+"-"+props.id.toString()+".png";
+			RNFS.exists(path).then((exists) => {
+				if (exists) {
+					setSource({uri:path});
+				} else {
+					setSource(null);
+				}
+			});
+		}
+	})
 	
 	return (
 		<View style={{

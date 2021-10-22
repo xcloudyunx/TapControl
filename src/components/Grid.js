@@ -31,6 +31,7 @@ export default function Grid(props) {
 						numOfCols={props.numOfCols}
 						buttonDim={buttonDim}
 						onPress={(id) => {props.onPress(props.className, id)}}
+						updatedIconButton={props.updatedIconButton}
 					/>
 				)
 			})}
