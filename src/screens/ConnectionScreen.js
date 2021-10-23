@@ -2,34 +2,41 @@ import React, {
 	useState
 	} from 'react';
 import {
+	Keyboard,
 	StyleSheet,
 	Text,
 	TextInput,
+	TouchableWithoutFeedback,
 	View} from 'react-native';
 
 import colors from "../config/colors";
 
+import Header from "../components/Header";
+import Scanner from "../components/Scanner";
+
 export default function ConnectionScreen(props) {
 	return (
-		<View style={styles.container}>
-			<Text
-				style={styles.text}
+		<TouchableWithoutFeedback
+			onPress={Keyboard.dismiss}
+		>
+			<View
+			style={styles.container}
 			>
-				SCAN QR CODE TO CONNECT
-			</Text>
-			<Text
-				style={styles.text}>
-				OR ENTER MANUALLY
-			</Text>
-			<TextInput
-				style={styles.input}
-				value={props.IP}
-				onChangeText={props.onChangeIP}
-				placeholder="ENTER IP ADDRESS HERE"
-				placeholderTextColor={colors.white}
-				keyboardType="numeric"
-			/>
-		</View>
+				<Header
+					value="SCAN QR CODE TO CONNECT"
+				/>
+				<Scanner />
+				<TextInput
+					style={styles.input}
+					value={props.IP}
+					onChangeText={props.onChangeIP}
+					onSubmitEditing={props.onSubmitIP}
+					placeholder="OR ENTER IP ADDRESS MANUALLY"
+					placeholderTextColor={colors.white}
+					keyboardType="numeric"
+				/>
+			</View>
+		</TouchableWithoutFeedback>
 	);
 };
 
@@ -37,17 +44,14 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: colors.black,
 		flex: 1,
+		justifyContent: "space-evenly",
+		alignItems: "center",
 	},
 	input: {
 		color: colors.white,
 		borderWidth: 1,
 		borderColor: colors.white,
 		textAlign: "center",
-		fontSize: 20,
+		width: "90%",
 	},
-	text: {
-		color: colors.white,
-		fontSize: 40,
-		textAlign: "center",
-	}
 });
