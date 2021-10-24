@@ -1,5 +1,6 @@
 import React, {
-	useState
+	useEffect,
+	useState,
 	} from 'react';
 import {
 	Keyboard,
@@ -8,6 +9,8 @@ import {
 	TextInput,
 	TouchableWithoutFeedback,
 	View} from 'react-native';
+	
+import Orientation from "react-native-orientation";
 
 import colors from "../config/colors";
 
@@ -15,6 +18,10 @@ import Header from "../components/Header";
 import Scanner from "../components/Scanner";
 
 export default function ConnectionScreen(props) {
+	useEffect(() => {
+		Orientation.lockToPortrait();
+	}, []);
+	
 	return (
 		<TouchableWithoutFeedback
 			onPress={Keyboard.dismiss}
