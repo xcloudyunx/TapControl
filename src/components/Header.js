@@ -10,6 +10,8 @@ export default function Header(props) {
 	return (
 		<Text
 			style={styles.text}
+			adjustsFontSizeToFit
+			numberOfLines={1}
 		>
 			{props.value}
 		</Text>
@@ -21,6 +23,6 @@ const styles = StyleSheet.create({
 		color: colors.white,
 		textAlign: "center",
 		fontWeight: "bold",
-		fontSize: 25, // want to change this such that it will always be one line
+		fontSize: 100,
 	}
 });
