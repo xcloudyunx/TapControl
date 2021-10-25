@@ -10,7 +10,6 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";
-// import Orientation from "react-native-orientation";
 
 import colors from "../config/colors";
 import constants from "../config/constants";
@@ -25,10 +24,6 @@ export default function HomeScreen(props) {
 	const [clientGlobal, setClient] = useState();
 	const [updatedIconButton, setUpdatedIconButton] = useState("0-0");
 	const [currentPage, setCurrentPage] = useState(1);
-	
-	// useEffect(() => {
-		// Orientation.unlockAllOrientations();
-	// }, []);
 	
 	useEffect(() => {
 		const handleData = (data) => {

@@ -10,7 +10,7 @@ import {
 	TouchableWithoutFeedback,
 	View} from 'react-native';
 	
-import Orientation from "react-native-orientation";
+import Orientation from "react-native-orientation-locker";
 
 import colors from "../config/colors";
 

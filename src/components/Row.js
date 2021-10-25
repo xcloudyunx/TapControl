@@ -1,20 +1,37 @@
-import React from 'react';
+import React, {
+	useEffect,
+	useState,
+} from 'react';
 import {
 	StyleSheet,
 	View,
 } from 'react-native';
-import {useDeviceOrientation} from "@react-native-community/hooks";
+
+import Orientation, {useOrientationChange} from "react-native-orientation-locker";
 
 import colors from "../config/colors";
 import IconButton from "./IconButton";
 
 export default function Row(props) {
-	const {portrait} = useDeviceOrientation();
+	const [orientation, setOrientation] = useState();
+	
+	useEffect(() => {
+		setOrientation(Orientation.getInitialOrientation());
+	}, []);
+	
+	useOrientationChange((orientation) => {
+		setOrientation(orientation);
+	});
 	
 	return (
 		<View style={[
 			styles.container,
-			{flexDirection: portrait ? "row" : "column-reverse",},
+			// flexDirection: portrait ? "row" : "column-reverse",
+			{
+				flexDirection:
+					orientation == "LANDSCAPE-LEFT" ? "column-reverse" : 
+					orientation == "LANDSCAPE-RIGHT" ? "column" : "row"
+			},
 		]}>
 			{[...Array(props.numOfCols)].map((x, j) => {
 				return (

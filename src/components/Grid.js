@@ -1,15 +1,20 @@
-import React from 'react';
+import React, {
+	useEffect,
+	useState,
+} from 'react';
 import {
 	StyleSheet,
 	View,
 	Dimensions,
 } from 'react-native';
-import {useDeviceOrientation} from "@react-native-community/hooks";
+
+import Orientation, {useOrientationChange} from "react-native-orientation-locker";
 
 import Row from "./Row";
 
 export default function Grid(props) {
-	const {portrait} = useDeviceOrientation();
+	// const {portrait} = useDeviceOrientation();
+	const [orientation, setOrientation] = useState();
 	
 	const window = Dimensions.get("window");
 	const buttonDim = Math.min(
@@ -17,10 +22,24 @@ export default function Grid(props) {
 		Math.min(window.width, window.height)/(props.numOfCols+1)
 	);
 	
+	useEffect(() => {
+		Orientation.unlockAllOrientations();
+		
+		setOrientation(Orientation.getInitialOrientation());
+	}, []);
+	
+	useOrientationChange((orientation) => {
+		setOrientation(orientation);
+	});
+	
 	return (
 		<View style={[
 			styles.container,
-			{flexDirection: portrait ? "column" : "row",}
+			{
+				flexDirection:
+					orientation == "LANDSCAPE-LEFT" ? "row" : 
+					orientation == "LANDSCAPE-RIGHT" ? "row-reverse" : "column",
+			}
 		]}>
 			{[...Array(props.numOfRows)].map((x, i) => {
 				return(

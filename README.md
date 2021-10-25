@@ -6,7 +6,6 @@ New features such as integrating plugins (coming soon).
 
 
 
-require @react-native-community/hooks
 
 require @react-native-async-storage/async-storage
 
@@ -16,4 +15,4 @@ changed useDeviceOrientation.js from 'screen' to 'window'
 
 require react-native-fs
 
-require react-native-orientation
+require react-native-orientation-locker

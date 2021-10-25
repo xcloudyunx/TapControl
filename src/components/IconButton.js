@@ -13,16 +13,24 @@ import constants from "../config/constants";
 export default function IconButton(props) {
 	const [source, setSource] = useState();
 	
+	const updateIconButton = () => {
+		const path = "file://"+RNFS.DocumentDirectoryPath+"/"+props.className.toString()+"-"+props.id.toString()+".png";
+		RNFS.exists(path).then((exists) => {
+			if (exists) {
+				setSource({uri:path});
+			} else {
+				setSource(null);
+			}
+		});
+	};
+	
+	useEffect(() => {
+		updateIconButton();
+	}, []);
+	
 	useEffect(() => {
 		if (props.updatedIconButton) {
-			const path = "file://"+RNFS.DocumentDirectoryPath+"/"+props.className.toString()+"-"+props.id.toString()+".png";
-			RNFS.exists(path).then((exists) => {
-				if (exists) {
-					setSource({uri:path});
-				} else {
-					setSource(null);
-				}
-			});
+			updateIconButton();
 		}
 	})
 	
