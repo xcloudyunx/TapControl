@@ -12,23 +12,30 @@ import ConnectionScreen from "./src/screens/ConnectionScreen";
 
 export default function App() {
 	const [IP, onChangeIP] = useState();
+	const [IPValid, setIPValid] = useState(true);
 	
 	const handleSubmitIP = () => {
-		console.log("submitted "+IP);
-		// change scene here
+		setIPValid(true);
+	}
+	
+	const handleDisconnect = () => {
+		setIPValid(false);
 	}
 	
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar />
-			<ConnectionScreen 
-				IP={IP}
-				onChangeIP={onChangeIP}
-				onSubmitIP={handleSubmitIP}
-			/>
-			{/*<HomeScreen
-				IP={IP}
-			/>*/}
+			{IPValid ? 
+				<HomeScreen
+					IP={IP}
+					onDisconnect={handleDisconnect}
+				/> :
+				<ConnectionScreen 
+					IP={IP}
+					onChangeIP={onChangeIP}
+					onSubmitIP={handleSubmitIP}
+				/>
+			}
 		</SafeAreaView>
 	);
 };

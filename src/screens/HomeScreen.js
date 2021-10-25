@@ -10,7 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";
-import Orientation from "react-native-orientation";
+// import Orientation from "react-native-orientation";
 
 import colors from "../config/colors";
 import constants from "../config/constants";
@@ -26,9 +26,9 @@ export default function HomeScreen(props) {
 	const [updatedIconButton, setUpdatedIconButton] = useState("0-0");
 	const [currentPage, setCurrentPage] = useState(1);
 	
-	useEffect(() => {
-		Orientation.unlockAllOrientations();
-	}, []);
+	// useEffect(() => {
+		// Orientation.unlockAllOrientations();
+	// }, []);
 	
 	useEffect(() => {
 		const handleData = (data) => {
@@ -75,6 +75,17 @@ export default function HomeScreen(props) {
 			() => {
 				client.setEncoding("utf8");
 				console.log("connected");
+				setClient(client);
+				fetchData("numOfRows", 4).then((r) => {
+					setNumOfRows(r);
+					fetchData("numOfCols", 2).then((c) => {
+						setNumOfCols(c);
+						fetchData("numOfPages", 1).then((p) => {
+							setNumOfPages(p);
+							setReadyToRender(1);
+						});
+					});
+				});
 			}
 		);
 		client.on("data", (data) => {
@@ -85,28 +96,17 @@ export default function HomeScreen(props) {
 				readBuffer = readBuffer.substring(splitIndex+6);
 			}
 		});
+		client.on("timeout", () => {
+			console.log("timeout");
+		});
 		client.on("error", (error) => {
-			alert("an error occured with the socket");
-			// exit to connection screen
-			// onDisconnect?
+			console.log("error");
+			console.log(error);
+			props.onDisconnect();
 		});
 		client.on("close", () => {
-			alert("socket closed");
-			// exit to connection screen
-		});
-		setClient(client);
-	}, []);
-	
-	useEffect(() => {
-		fetchData("numOfRows", 4).then((r) => {
-			setNumOfRows(r);
-			fetchData("numOfCols", 2).then((c) => {
-				setNumOfCols(c);
-				fetchData("numOfPages", 1).then((p) => {
-					setNumOfPages(p);
-					setReadyToRender(1);
-				});
-			});
+			console.log("close");
+			props.onDisconnect();
 		});
 	}, []);
 	
