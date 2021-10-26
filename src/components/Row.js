@@ -37,11 +37,12 @@ export default function Row(props) {
 				return (
 					<IconButton
 						key={j}
-						id={props.id*props.numOfCols+j}
+						id={props.id+j}
 						className={props.className}
 						buttonDim={props.buttonDim}
 						onPress={props.onPress}
-						updatedIconButton={props.updatedIconButton == props.id*props.numOfCols+j ? true : false}
+						updatedIconButton={props.updatedIconButtons[props.id+j]}
+						onFinishUpdateIconButton={props.onFinishUpdateIconButton}
 					/>
 				)
 			})}

@@ -13,7 +13,6 @@ import Orientation, {useOrientationChange} from "react-native-orientation-locker
 import Row from "./Row";
 
 export default function Grid(props) {
-	// const {portrait} = useDeviceOrientation();
 	const [orientation, setOrientation] = useState();
 	
 	const window = Dimensions.get("window");
@@ -45,12 +44,13 @@ export default function Grid(props) {
 				return(
 					<Row
 						key={i}
-						id={i}
+						id={i*props.numOfCols}
 						className={props.className}
 						numOfCols={props.numOfCols}
 						buttonDim={buttonDim}
-						onPress={(id) => {props.onPress(props.className, id)}}
-						updatedIconButton={props.updatedIconButton}
+						onPress={props.onPress}
+						updatedIconButtons={props.updatedIconButtons}
+						onFinishUpdateIconButton={props.onFinishUpdateIconButton}
 					/>
 				)
 			})}

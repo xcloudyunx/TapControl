@@ -17,7 +17,7 @@ export default function IconButton(props) {
 		const path = "file://"+RNFS.DocumentDirectoryPath+"/"+props.className.toString()+"-"+props.id.toString()+".png";
 		RNFS.exists(path).then((exists) => {
 			if (exists) {
-				setSource({uri:path});
+				setSource({uri:path+"#"+Date.now().toString()});
 			} else {
 				setSource(null);
 			}
@@ -31,8 +31,9 @@ export default function IconButton(props) {
 	useEffect(() => {
 		if (props.updatedIconButton) {
 			updateIconButton();
+			props.onFinishUpdateIconButton(props.className, props.id);
 		}
-	})
+	}, [props.updatedIconButton])
 	
 	return (
 		<View style={{
@@ -41,7 +42,7 @@ export default function IconButton(props) {
 		}}>
 			<TouchableHighlight
 				style={[styles.touch, {borderRadius: props.buttonDim/8}]}
-				onPress={() => {props.onPress(props.id)}}
+				onPress={() => {props.onPress(props.className, props.id)}}
 			>
 				<View style={[styles.button, {borderRadius: props.buttonDim/8}]}>
 					<Image

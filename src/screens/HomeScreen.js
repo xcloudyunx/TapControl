@@ -22,45 +22,64 @@ export default function HomeScreen(props) {
 	const [numOfPages, setNumOfPages] = useState();
 	const [readyToRender, setReadyToRender] = useState(0);
 	const [clientGlobal, setClient] = useState();
-	const [updatedIconButton, setUpdatedIconButton] = useState("0-0");
+	const [updatedIconButtons, setUpdatedIconButtons] = useState();
 	const [currentPage, setCurrentPage] = useState(1);
 	
+	const handleData = (data) => {
+		if (data.state) {
+			syncGrid(data.state);
+		} else if (data.imageName) {
+			syncImage(data.imageName, data.imageData);
+		}
+	};
+	
+	const syncGrid = (state) => {
+		setNumOfRows(state.numOfRows);
+		setNumOfCols(state.numOfCols);
+		setNumOfPages(state.numOfPages);
+	};
+	
+	const handleUpdateIconButton = (imageName) => {
+		const pi = imageName.split("-");
+		const page = parseInt(pi[0]);
+		const index = parseInt(pi[1]);
+		// const uIB = [...updatedIconButtons];
+		const uIB = [];
+		// uIB[page][index] = true;
+		setUpdatedIconButtons(uIB);
+	}
+	
+	const handleFinishUpdateIconButton = (page, index) => {
+		const uIB = [...updatedIconButtons];
+		uIB[page][index] = false;
+		setUpdatedIconButtons(uIB);
+	}
+	
+	const syncImage = (imageName, imageData) => {
+		console.log("syncing image "+imageName);
+		const path = RNFS.DocumentDirectoryPath+"/"+imageName+".png";
+		if (imageData) {
+			RNFS.writeFile(path, imageData, "base64").then((success) => {
+				handleUpdateIconButton(imageName);
+			}).catch((err) => {
+				console.log("create/update image error");
+				alert(err.message);
+			});
+		} else {
+			RNFS.exists(path).then((exists) => {
+				if (exists) {
+					RNFS.unlink(path).then(() => {
+						handleUpdateIconButton(imageName);
+					}).catch((err) => {
+						console.log("delete image error");
+						alert(err.message);
+					});
+				}
+			});
+		}
+	};
+	
 	useEffect(() => {
-		const handleData = (data) => {
-			if (data.state) {
-				syncGrid(data.state);
-			} else if (data.imageName) {
-				syncImage(data.imageName, data.imageData);
-			}
-		};
-		
-		const syncGrid = (state) => {
-			setNumOfRows(state.numOfRows);
-			setNumOfCols(state.numOfCols);
-			setNumOfPages(state.numOfPages);
-		};
-		
-		const syncImage = (imageName, imageData) => {
-			const path = RNFS.DocumentDirectoryPath+"/"+imageName+".png";
-			if (imageData) {
-				RNFS.writeFile(path, imageData, "base64").then((success) => {
-					setUpdatedIconButton(imageName);
-				}).catch((err) => {
-					alert(err.message);
-				});
-			} else {
-				RNFS.exists(path).then((exists) => {
-					if (exists) {
-						RNFS.unlink(path).then(() => {
-							setUpdatedIconButton(imageName);
-						}).catch((err) => {
-							alert(err.message);
-						});
-					}
-				});
-			}
-		};
-		
 		let readBuffer = "";
 		const client = TcpSocket.createConnection(
 			{
@@ -77,7 +96,6 @@ export default function HomeScreen(props) {
 						setNumOfCols(c);
 						fetchData("numOfPages", 1).then((p) => {
 							setNumOfPages(p);
-							setReadyToRender(1);
 						});
 					});
 				});
@@ -90,9 +108,6 @@ export default function HomeScreen(props) {
 				handleData(JSON.parse(readBuffer.substring(0, splitIndex)));
 				readBuffer = readBuffer.substring(splitIndex+6);
 			}
-		});
-		client.on("timeout", () => {
-			console.log("timeout");
 		});
 		client.on("error", (error) => {
 			console.log("error");
@@ -115,6 +130,21 @@ export default function HomeScreen(props) {
 		storeData("numOfPages", numOfPages);
 	}, [numOfPages]);
 	
+	useEffect(() => {
+		// change this to reflect updating size
+		const uIB = [[]];
+		for (let i=1; i<=numOfPages; i++) {
+			uIB[i] = [];
+			for (let j=0; j<numOfCols*numOfRows; j++) {
+				uIB[i][j] = false;
+			}
+		}
+		setUpdatedIconButtons(uIB);
+		if (numOfRows && numOfCols && numOfPages) {
+			setReadyToRender(1);
+		}
+	}, [numOfRows, numOfCols, numOfPages]);
+	
 	const handleIconButtonPress = (page, id) => {
 		clientGlobal.write(page.toString()+"-"+id.toString());
 	};
@@ -132,8 +162,8 @@ export default function HomeScreen(props) {
 				currentPage={currentPage}
 				onIconButtonPress={handleIconButtonPress}
 				onPageChange={handlePageChange}
-				updatedIconButtonPage={updatedIconButton.split("-")[0]}
-				updatedIconButtonIndex={updatedIconButton.split("-")[1]}
+				updatedIconButtons={updatedIconButtons}
+				onFinishUpdateIconButton={handleFinishUpdateIconButton}
 			/> : <View />}
 		</View>
 	);
