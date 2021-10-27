@@ -26,14 +26,10 @@ export default function IconButton(props) {
 	
 	useEffect(() => {
 		updateIconButton();
-	}, []);
-	
-	useEffect(() => {
-		if (props.updatedIconButton) {
+		props.eventEmitter.addListener(rops.className.toString()+"-"+props.id.toString(), () => {
 			updateIconButton();
-			props.onFinishUpdateIconButton(props.className, props.id);
-		}
-	}, [props.updatedIconButton])
+		});
+	}, []);
 	
 	return (
 		<View style={{

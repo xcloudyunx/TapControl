@@ -41,8 +41,7 @@ export default function Row(props) {
 						className={props.className}
 						buttonDim={props.buttonDim}
 						onPress={props.onPress}
-						updatedIconButton={props.updatedIconButtons[props.id+j]}
-						onFinishUpdateIconButton={props.onFinishUpdateIconButton}
+						eventEmitter={props.eventEmitter}
 					/>
 				)
 			})}

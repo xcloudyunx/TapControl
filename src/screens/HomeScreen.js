@@ -7,6 +7,7 @@ import {
 	View
 	} from 'react-native';
 
+import EventEmitter from "EventEmitter";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";
@@ -22,8 +23,8 @@ export default function HomeScreen(props) {
 	const [numOfPages, setNumOfPages] = useState();
 	const [readyToRender, setReadyToRender] = useState(0);
 	const [clientGlobal, setClient] = useState();
-	const [updatedIconButtons, setUpdatedIconButtons] = useState();
 	const [currentPage, setCurrentPage] = useState(1);
+	const [eventEmitter, setEventEmitter] = useState();
 	
 	const handleData = (data) => {
 		if (data.state) {
@@ -40,25 +41,14 @@ export default function HomeScreen(props) {
 	};
 	
 	const handleUpdateIconButton = (imageName) => {
-		const pi = imageName.split("-");
-		const page = parseInt(pi[0]);
-		const index = parseInt(pi[1]);
-		// const uIB = [...updatedIconButtons];
-		const uIB = [];
-		// uIB[page][index] = true;
-		setUpdatedIconButtons(uIB);
-	}
-	
-	const handleFinishUpdateIconButton = (page, index) => {
-		const uIB = [...updatedIconButtons];
-		uIB[page][index] = false;
-		setUpdatedIconButtons(uIB);
+		eventEmitter.emit(imageName);
 	}
 	
 	const syncImage = (imageName, imageData) => {
 		console.log("syncing image "+imageName);
 		const path = RNFS.DocumentDirectoryPath+"/"+imageName+".png";
 		if (imageData) {
+			console.log(updatedIconButtons);
 			RNFS.writeFile(path, imageData, "base64").then((success) => {
 				handleUpdateIconButton(imageName);
 			}).catch((err) => {
@@ -80,6 +70,13 @@ export default function HomeScreen(props) {
 	};
 	
 	useEffect(() => {
+		setEventEmitter(new EventEmitter());
+		return () => {
+			eventEmitter.removeAllListeners();
+		}
+	}, []);
+	
+	useEffect(() => {
 		let readBuffer = "";
 		const client = TcpSocket.createConnection(
 			{
@@ -96,6 +93,7 @@ export default function HomeScreen(props) {
 						setNumOfCols(c);
 						fetchData("numOfPages", 1).then((p) => {
 							setNumOfPages(p);
+							setReadyToRender(1);
 						});
 					});
 				});
@@ -130,21 +128,6 @@ export default function HomeScreen(props) {
 		storeData("numOfPages", numOfPages);
 	}, [numOfPages]);
 	
-	useEffect(() => {
-		// change this to reflect updating size
-		const uIB = [[]];
-		for (let i=1; i<=numOfPages; i++) {
-			uIB[i] = [];
-			for (let j=0; j<numOfCols*numOfRows; j++) {
-				uIB[i][j] = false;
-			}
-		}
-		setUpdatedIconButtons(uIB);
-		if (numOfRows && numOfCols && numOfPages) {
-			setReadyToRender(1);
-		}
-	}, [numOfRows, numOfCols, numOfPages]);
-	
 	const handleIconButtonPress = (page, id) => {
 		clientGlobal.write(page.toString()+"-"+id.toString());
 	};
@@ -162,8 +145,7 @@ export default function HomeScreen(props) {
 				currentPage={currentPage}
 				onIconButtonPress={handleIconButtonPress}
 				onPageChange={handlePageChange}
-				updatedIconButtons={updatedIconButtons}
-				onFinishUpdateIconButton={handleFinishUpdateIconButton}
+				eventEmitter={eventEmitter}
 			/> : <View />}
 		</View>
 	);

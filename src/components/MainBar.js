@@ -76,8 +76,7 @@ export default function MainBar(props) {
 					numOfRows={props.numOfRows}
 					numOfCols={props.numOfCols}
 					onPress={props.onIconButtonPress}
-					updatedIconButtons={props.updatedIconButtons[props.currentPage-1]}
-					onFinishUpdateIconButtons={props.onFinishUpdateIconButtons}
+					eventEmitter={props.eventEmitter}
 				/>
 			);
 		} else {
@@ -96,8 +95,7 @@ export default function MainBar(props) {
 					numOfRows={props.numOfRows}
 					numOfCols={props.numOfCols}
 					onPress={props.onIconButtonPress}
-					updatedIconButtons={props.updatedIconButtons[props.currentPage+1]}
-					onFinishUpdateIconButtons={props.onFinishUpdateIconButtons}
+					eventEmitter={props.eventEmitter}
 				/>
 			);
 		} else {
@@ -128,8 +126,7 @@ export default function MainBar(props) {
 				numOfRows={props.numOfRows}
 				numOfCols={props.numOfCols}
 				onPress={props.onIconButtonPress}
-				updatedIconButtons={props.updatedIconButtons[props.currentPage]}
-				onFinishUpdateIconButton={props.onFinishUpdateIconButton}
+				eventEmitter={props.eventEmitter}
 			/>
 			{renderNextGrid()}
 		</Animated.View>

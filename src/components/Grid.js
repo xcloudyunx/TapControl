@@ -49,8 +49,7 @@ export default function Grid(props) {
 						numOfCols={props.numOfCols}
 						buttonDim={buttonDim}
 						onPress={props.onPress}
-						updatedIconButtons={props.updatedIconButtons}
-						onFinishUpdateIconButton={props.onFinishUpdateIconButton}
+						eventEmitter={props.eventEmitter}
 					/>
 				)
 			})}
