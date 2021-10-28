@@ -7,7 +7,7 @@ import {
 	View
 	} from 'react-native';
 
-import EventEmitter from "EventEmitter";
+import EventEmitter from "eventemitter3";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";

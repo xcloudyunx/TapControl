@@ -5,6 +5,7 @@ import {
 	TouchableHighlight,
 	Image,
 } from 'react-native';
+
 import RNFS from "react-native-fs";
 
 import colors from "../config/colors";

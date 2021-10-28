@@ -15,3 +15,5 @@ changed useDeviceOrientation.js from 'screen' to 'window'
 require react-native-fs
 
 require react-native-orientation-locker
+
+require eventemitter3
