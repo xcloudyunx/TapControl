@@ -124,8 +124,8 @@ export default function HomeScreen(props) {
 		storeData("numOfPages", numOfPages);
 	}, [numOfPages]);
 	
-	const handleIconButtonPress = (page, id) => {
-		clientGlobal.write(page.toString()+"-"+id.toString());
+	const handleIconButtonPress = (page, row, col) => {
+		clientGlobal.write(page+"-"+row+"-"+col);
 	};
 	
 	const handlePageChange = (page) => {

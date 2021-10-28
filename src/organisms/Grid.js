@@ -46,8 +46,8 @@ export default function Grid(props) {
 				return(
 					<Row
 						key={i}
-						id={i*props.numOfCols}
-						className={props.className}
+						page={props.page}
+						row={i.toString()}
 						numOfCols={props.numOfCols}
 						buttonDim={buttonDim}
 						onPress={props.onPress}

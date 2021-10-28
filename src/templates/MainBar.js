@@ -78,7 +78,7 @@ export default function MainBar(props) {
 		if (props.currentPage > 1) {
 			return (
 				<Grid
-					className={props.currentPage-1}
+					page={(props.currentPage-1).toString()}
 					numOfRows={props.numOfRows}
 					numOfCols={props.numOfCols}
 					onPress={props.onIconButtonPress}
@@ -97,7 +97,7 @@ export default function MainBar(props) {
 		if (props.currentPage < props.numOfPages) {
 			return (
 				<Grid
-					className={props.currentPage+1}
+					page={(props.currentPage+1).toString()}
 					numOfRows={props.numOfRows}
 					numOfCols={props.numOfCols}
 					onPress={props.onIconButtonPress}
@@ -128,7 +128,7 @@ export default function MainBar(props) {
 		>
 			{renderPreviousGrid()}
 			<Grid
-				className={props.currentPage}
+				page={props.currentPage.toString()}
 				numOfRows={props.numOfRows}
 				numOfCols={props.numOfCols}
 				onPress={props.onIconButtonPress}

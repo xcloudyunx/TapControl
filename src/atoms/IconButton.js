@@ -18,7 +18,7 @@ export default function IconButton(props) {
 	const [source, setSource] = useState();
 	
 	const updateIconButton = () => {
-		const path = "file://"+RNFS.DocumentDirectoryPath+"/"+props.className.toString()+"-"+props.id.toString()+".png";
+		const path = "file://"+RNFS.DocumentDirectoryPath+"/"+props.page+"-"+props.row+"-"+props.col+".png";
 		RNFS.exists(path).then((exists) => {
 			if (exists) {
 				setSource({uri:path+"#"+Date.now().toString()});
@@ -30,7 +30,7 @@ export default function IconButton(props) {
 	
 	useEffect(() => {
 		updateIconButton();
-		props.eventEmitter.addListener(props.className.toString()+"-"+props.id.toString(), () => {
+		props.eventEmitter.addListener(props.page+"-"+props.row+"-"+props.col, () => {
 			updateIconButton();
 		});
 	}, []);
@@ -42,7 +42,7 @@ export default function IconButton(props) {
 		}}>
 			<TouchableHighlight
 				style={[styles.touch, {borderRadius: props.buttonDim/8}]}
-				onPress={() => {props.onPress(props.className, props.id)}}
+				onPress={() => {props.onPress(props.page, props.row, props.col)}}
 			>
 				<View style={[styles.button, {borderRadius: props.buttonDim/8}]}>
 					<Image

@@ -40,8 +40,9 @@ export default function Row(props) {
 				return (
 					<IconButton
 						key={j}
-						id={props.id+j}
-						className={props.className}
+						page={props.page}
+						row={props.row}
+						col={j.toString()}
 						buttonDim={props.buttonDim}
 						onPress={props.onPress}
 						eventEmitter={props.eventEmitter}
