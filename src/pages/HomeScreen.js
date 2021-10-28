@@ -3,6 +3,7 @@ import React, {
 	useState,
 	} from 'react';
 import {
+	Dimensions,
 	StyleSheet,
 	View,
 	} from 'react-native';
@@ -11,6 +12,7 @@ import EventEmitter from "eventemitter3";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";
+import Orientation from "react-native-orientation-locker";
 
 import colors from "../../config/colors";
 import constants from "../../config/constants";
@@ -25,6 +27,14 @@ export default function HomeScreen(props) {
 	const [clientGlobal, setClient] = useState();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [eventEmitter, setEventEmitter] = useState(new EventEmitter());
+	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
+	const [screenHeight, setScreenHeight] = useState(Dimensions.get("window").height);
+	const [orientation, setOrientation] = useState(Orientation.getInitialOrientation());
+	
+	const buttonDim = Math.min(
+		Math.max(screenWidth, screenHeight)/(numOfRows+1),
+		Math.min(screenWidth, screenHeight)/(numOfCols+1)
+	);
 	
 	const handleData = (data) => {
 		if (data.state) {
@@ -109,8 +119,21 @@ export default function HomeScreen(props) {
 			props.onDisconnect();
 		});
 		
+		Orientation.unlockAllOrientations();
+		
+		Dimensions.addEventListener("change", () => {
+			setScreenWidth(Dimensions.get("window").width);
+			setScreenHeight(Dimensions.get("window").height);
+		});
+		
+		Orientation.addOrientationListener((orientation) => {
+			setOrientation(orientation);
+		});
+		
 		return () => {
 			eventEmitter.removeAllListeners();
+			Dimensions.removeEventListener("change");
+			Orientation.removeAllListeners();
 		}
 	}, []);
 	
@@ -142,6 +165,10 @@ export default function HomeScreen(props) {
 				onIconButtonPress={handleIconButtonPress}
 				onPageChange={handlePageChange}
 				eventEmitter={eventEmitter}
+				screenWidth={screenWidth}
+				screenHeight={screenHeight}
+				buttonDim={buttonDim}
+				orientation={orientation}
 			/> : <View />}
 		</View>
 	);

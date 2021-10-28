@@ -9,22 +9,11 @@ import {
 	View,
 	} from 'react-native';
 
-import {
-	useDeviceOrientation,
-	} from "@react-native-community/hooks";
-
 import colors from "../../config/colors";
 
 import Grid from "../organisms/Grid";
 
 export default function MainBar(props) {
-	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
-	const [screenHeight, setScreenHeight] = useState(Dimensions.get("window").height);
-	Dimensions.addEventListener("change", () => {
-		setScreenWidth(Dimensions.get("window").width);
-		setScreenHeight(Dimensions.get("window").height);
-	});
-	
 	const pan = new Animated.Value(0);
 	let time = 0;
 
@@ -40,22 +29,22 @@ export default function MainBar(props) {
 		},
 		onPanResponderRelease: (evt, {dx, vx}) => {
 			const averagevx = dx/time;
-			if (props.currentPage != 1 && (dx > screenWidth/3 || averagevx > 50)) {
+			if (props.currentPage != 1 && (dx > props.screenWidth/3 || averagevx > 50)) {
 				Animated.spring(
 					pan,
 					{
-						toValue: screenWidth,
+						toValue: props.screenWidth,
 						useNativeDriver: false
 					}
 				).start(() => {
 					pan.setValue(0);
 					props.onPageChange(props.currentPage-1);
 				})
-			} else if (props.currentPage != props.numOfPages && (dx < -screenWidth/3 || averagevx < -50)) {
+			} else if (props.currentPage != props.numOfPages && (dx < -props.screenWidth/3 || averagevx < -50)) {
 				Animated.spring(
 					pan,
 					{
-						toValue: -screenWidth,
+						toValue: -props.screenWidth,
 						useNativeDriver: false
 					}
 				).start(() => {
@@ -83,6 +72,8 @@ export default function MainBar(props) {
 					numOfCols={props.numOfCols}
 					onPress={props.onIconButtonPress}
 					eventEmitter={props.eventEmitter}
+					buttonDim={props.buttonDim}
+					orientation={props.orientation}
 				/>
 			);
 		} else {
@@ -102,6 +93,8 @@ export default function MainBar(props) {
 					numOfCols={props.numOfCols}
 					onPress={props.onIconButtonPress}
 					eventEmitter={props.eventEmitter}
+					buttonDim={props.buttonDim}
+					orientation={props.orientation}
 				/>
 			);
 		} else {
@@ -119,9 +112,9 @@ export default function MainBar(props) {
 			style={[
 				styles.container,
 				{
-					width: 3*screenWidth,
-					height: screenHeight,
-					right: screenWidth,
+					width: 3*props.screenWidth,
+					height: props.screenHeight,
+					right: props.screenWidth,
 					transform: [{translateX: pan}]
 				}
 			]}
@@ -133,6 +126,8 @@ export default function MainBar(props) {
 				numOfCols={props.numOfCols}
 				onPress={props.onIconButtonPress}
 				eventEmitter={props.eventEmitter}
+				buttonDim={props.buttonDim}
+				orientation={props.orientation}
 			/>
 			{renderNextGrid()}
 		</Animated.View>

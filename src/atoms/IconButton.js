@@ -19,6 +19,8 @@ export default function IconButton(props) {
 	
 	const updateIconButton = () => {
 		const path = "file://"+RNFS.DocumentDirectoryPath+"/"+props.page+"-"+props.row+"-"+props.col+".png";
+		console.log(props.page);
+		console.log(path);
 		RNFS.exists(path).then((exists) => {
 			if (exists) {
 				setSource({uri:path+"#"+Date.now().toString()});
