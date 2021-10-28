@@ -1,5 +1,5 @@
 import React, {
-	useState
+	useState,
 	} from 'react';
 import {
 	SafeAreaView,
@@ -7,8 +7,8 @@ import {
 	StyleSheet,
 	} from 'react-native';
 
-import HomeScreen from "./src/screens/HomeScreen";
-import ConnectionScreen from "./src/screens/ConnectionScreen";
+import HomeScreen from "./src/pages/HomeScreen";
+import ConnectionScreen from "./src/pages/ConnectionScreen";
 
 export default function App() {
 	const [IP, onChangeIP] = useState();

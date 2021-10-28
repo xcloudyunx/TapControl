@@ -8,14 +8,15 @@ import {
 	Text,
 	TextInput,
 	TouchableWithoutFeedback,
-	View} from 'react-native';
+	View
+	} from 'react-native';
 	
 import Orientation from "react-native-orientation-locker";
 
-import colors from "../config/colors";
+import colors from "../../config/colors";
 
-import Header from "../components/Header";
-import Scanner from "../components/Scanner";
+import Header from "../atoms/Header";
+import Scanner from "../atoms/Scanner";
 
 export default function ConnectionScreen(props) {
 	useEffect(() => {

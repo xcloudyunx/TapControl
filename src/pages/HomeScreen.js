@@ -1,10 +1,10 @@
 import React, {
 	useEffect,
-	useState
+	useState,
 	} from 'react';
 import {
 	StyleSheet,
-	View
+	View,
 	} from 'react-native';
 
 import EventEmitter from "eventemitter3";
@@ -12,10 +12,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";
 
-import colors from "../config/colors";
-import constants from "../config/constants";
+import colors from "../../config/colors";
+import constants from "../../config/constants";
 
-import MainBar from "../components/MainBar";
+import MainBar from "../templates/MainBar";
 
 export default function HomeScreen(props) {
 	const [numOfRows, setNumOfRows] = useState();
@@ -24,7 +24,7 @@ export default function HomeScreen(props) {
 	const [readyToRender, setReadyToRender] = useState(0);
 	const [clientGlobal, setClient] = useState();
 	const [currentPage, setCurrentPage] = useState(1);
-	const [eventEmitter, setEventEmitter] = useState();
+	const [eventEmitter, setEventEmitter] = useState(new EventEmitter());
 	
 	const handleData = (data) => {
 		if (data.state) {
@@ -48,7 +48,6 @@ export default function HomeScreen(props) {
 		console.log("syncing image "+imageName);
 		const path = RNFS.DocumentDirectoryPath+"/"+imageName+".png";
 		if (imageData) {
-			console.log(updatedIconButtons);
 			RNFS.writeFile(path, imageData, "base64").then((success) => {
 				handleUpdateIconButton(imageName);
 			}).catch((err) => {
@@ -68,13 +67,6 @@ export default function HomeScreen(props) {
 			});
 		}
 	};
-	
-	useEffect(() => {
-		setEventEmitter(new EventEmitter());
-		return () => {
-			eventEmitter.removeAllListeners();
-		}
-	}, []);
 	
 	useEffect(() => {
 		let readBuffer = "";
@@ -116,6 +108,10 @@ export default function HomeScreen(props) {
 			console.log("close");
 			props.onDisconnect();
 		});
+		
+		return () => {
+			eventEmitter.removeAllListeners();
+		}
 	}, []);
 	
 	useEffect(() => {

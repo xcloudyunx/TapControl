@@ -1,15 +1,21 @@
-import React, {useState} from 'react';
+import React, {
+	useState,
+	} from 'react';
 import {
 	Animated,
 	Dimensions,
 	PanResponder,
 	StyleSheet,
 	View,
-} from 'react-native';
-import {useDeviceOrientation} from "@react-native-community/hooks";
+	} from 'react-native';
 
-import colors from "../config/colors";
-import Grid from "../components/Grid";
+import {
+	useDeviceOrientation,
+	} from "@react-native-community/hooks";
+
+import colors from "../../config/colors";
+
+import Grid from "../organisms/Grid";
 
 export default function MainBar(props) {
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);

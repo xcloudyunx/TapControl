@@ -1,16 +1,19 @@
 import React, {
 	useEffect,
 	useState,
-} from 'react';
+	} from 'react';
 import {
 	StyleSheet,
 	View,
-} from 'react-native';
+	} from 'react-native';
 
-import Orientation, {useOrientationChange} from "react-native-orientation-locker";
+import Orientation, {
+	useOrientationChange,
+	} from "react-native-orientation-locker";
 
-import colors from "../config/colors";
-import IconButton from "./IconButton";
+import colors from "../../config/colors";
+
+import IconButton from "../atoms/IconButton";
 
 export default function Row(props) {
 	const [orientation, setOrientation] = useState();

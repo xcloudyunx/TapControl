@@ -1,16 +1,18 @@
 import React, {
 	useEffect,
 	useState,
-} from 'react';
+	} from 'react';
 import {
+	Dimensions,
 	StyleSheet,
 	View,
-	Dimensions,
-} from 'react-native';
+	} from 'react-native';
 
-import Orientation, {useOrientationChange} from "react-native-orientation-locker";
+import Orientation, {
+	useOrientationChange,
+	} from "react-native-orientation-locker";
 
-import Row from "./Row";
+import Row from "../molecules/Row";
 
 export default function Grid(props) {
 	const [orientation, setOrientation] = useState();

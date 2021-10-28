@@ -1,15 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {
+	useState,
+	useEffect,
+	} from 'react';
 import {
 	StyleSheet,
 	View,
 	TouchableHighlight,
 	Image,
-} from 'react-native';
+	} from 'react-native';
 
 import RNFS from "react-native-fs";
 
-import colors from "../config/colors";
-import constants from "../config/constants";
+import colors from "../../config/colors";
+import constants from "../../config/constants";
 
 export default function IconButton(props) {
 	const [source, setSource] = useState();
@@ -27,7 +30,7 @@ export default function IconButton(props) {
 	
 	useEffect(() => {
 		updateIconButton();
-		props.eventEmitter.addListener(rops.className.toString()+"-"+props.id.toString(), () => {
+		props.eventEmitter.addListener(props.className.toString()+"-"+props.id.toString(), () => {
 			updateIconButton();
 		});
 	}, []);
