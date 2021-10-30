@@ -1,7 +1,4 @@
-import React, {
-	useEffect,
-	useState,
-	} from 'react';
+import React from 'react';
 import {
 	StyleSheet,
 	View,
@@ -17,6 +14,8 @@ export default function Grid(props) {
 				flexDirection:
 					props.orientation == "LANDSCAPE-LEFT" ? "row" : 
 					props.orientation == "LANDSCAPE-RIGHT" ? "row-reverse" : "column",
+				width: props.screenWidth,
+				height: props.screenHeight,
 			}
 		]}>
 			{[...Array(props.numOfRows)].map((x, i) => {
@@ -38,7 +37,6 @@ export default function Grid(props) {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: "space-evenly",
 	},
 });

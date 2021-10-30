@@ -15,26 +15,28 @@ import colors from "../../config/colors";
 import constants from "../../config/constants";
 
 export default function IconButton(props) {
-	const [source, setSource] = useState();
+	const [source, setSource] = useState(null);
 	
 	const updateIconButton = () => {
 		const path = "file://"+RNFS.DocumentDirectoryPath+"/"+props.page+"-"+props.row+"-"+props.col+".png";
-		console.log(props.page);
-		console.log(path);
 		RNFS.exists(path).then((exists) => {
 			if (exists) {
 				setSource({uri:path+"#"+Date.now().toString()});
 			} else {
 				setSource(null);
 			}
+			// props.eventEmitter.emit("updateImage");
 		});
 	};
 	
 	useEffect(() => {
 		updateIconButton();
+		
+		console.log("creating listener");
 		props.eventEmitter.addListener(props.page+"-"+props.row+"-"+props.col, () => {
 			updateIconButton();
 		});
+		console.log("listener created");
 	}, []);
 	
 	return (

@@ -25,11 +25,10 @@ export default function HomeScreen(props) {
 	const [numOfPages, setNumOfPages] = useState();
 	const [readyToRender, setReadyToRender] = useState(0);
 	const [clientGlobal, setClient] = useState();
-	const [currentPage, setCurrentPage] = useState(1);
-	const [eventEmitter, setEventEmitter] = useState(new EventEmitter());
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
 	const [screenHeight, setScreenHeight] = useState(Dimensions.get("window").height);
 	const [orientation, setOrientation] = useState(Orientation.getInitialOrientation());
+	const eventEmitter = new EventEmitter();
 	
 	const buttonDim = Math.min(
 		Math.max(screenWidth, screenHeight)/(numOfRows+1),
@@ -121,7 +120,7 @@ export default function HomeScreen(props) {
 		
 		Orientation.unlockAllOrientations();
 		
-		Dimensions.addEventListener("change", () => {
+		const dimListener = Dimensions.addEventListener("change", () => {
 			setScreenWidth(Dimensions.get("window").width);
 			setScreenHeight(Dimensions.get("window").height);
 		});
@@ -132,7 +131,7 @@ export default function HomeScreen(props) {
 		
 		return () => {
 			eventEmitter.removeAllListeners();
-			Dimensions.removeEventListener("change");
+			dimListener.remove()
 			Orientation.removeAllListeners();
 		}
 	}, []);
@@ -144,15 +143,14 @@ export default function HomeScreen(props) {
 		storeData("numOfCols", numOfCols);
 	}, [numOfCols]);
 	useEffect(() => {
+		// if (currentPage > numOfPages) {
+			// setCurrentPage(numOfPages);
+		// }
 		storeData("numOfPages", numOfPages);
 	}, [numOfPages]);
 	
 	const handleIconButtonPress = (page, row, col) => {
 		clientGlobal.write(page+"-"+row+"-"+col);
-	};
-	
-	const handlePageChange = (page) => {
-		setCurrentPage(page);
 	};
 	
 	return (
@@ -161,9 +159,7 @@ export default function HomeScreen(props) {
 				numOfRows={numOfRows}
 				numOfCols={numOfCols}
 				numOfPages={numOfPages}
-				currentPage={currentPage}
 				onIconButtonPress={handleIconButtonPress}
-				onPageChange={handlePageChange}
 				eventEmitter={eventEmitter}
 				screenWidth={screenWidth}
 				screenHeight={screenHeight}
