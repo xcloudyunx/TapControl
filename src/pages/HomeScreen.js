@@ -142,9 +142,6 @@ export default function HomeScreen(props) {
 		storeData("numOfCols", numOfCols);
 	}, [numOfCols]);
 	useEffect(() => {
-		// if (currentPage > numOfPages) {
-			// setCurrentPage(numOfPages);
-		// }
 		storeData("numOfPages", numOfPages);
 	}, [numOfPages]);
 	
