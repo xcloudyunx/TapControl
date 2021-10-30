@@ -6,7 +6,7 @@ import {
 
 import Row from "../molecules/Row";
 
-export default function Grid(props) {
+export default function Grid(props) {	
 	return (
 		<View style={[
 			styles.container,
@@ -27,7 +27,6 @@ export default function Grid(props) {
 						numOfCols={props.numOfCols}
 						buttonDim={props.buttonDim}
 						onPress={props.onPress}
-						eventEmitter={props.eventEmitter}
 						orientation={props.orientation}
 					/>
 				)

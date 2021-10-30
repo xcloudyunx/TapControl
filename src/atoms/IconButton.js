@@ -14,6 +14,8 @@ import RNFS from "react-native-fs";
 import colors from "../../config/colors";
 import constants from "../../config/constants";
 
+import EventEmitter from "./EventEmitter";
+
 export default function IconButton(props) {
 	const [source, setSource] = useState(null);
 	
@@ -25,14 +27,13 @@ export default function IconButton(props) {
 			} else {
 				setSource(null);
 			}
-			// props.eventEmitter.emit("updateImage");
 		});
 	};
 	
 	useEffect(() => {
 		updateIconButton();
 		
-		props.eventEmitter.addListener(props.page+"-"+props.row+"-"+props.col, () => {
+		EventEmitter.getEventEmitter().addListener(props.page+"-"+props.row+"-"+props.col, () => {
 			updateIconButton();
 		});
 	}, []);

@@ -8,7 +8,6 @@ import {
 	View,
 	} from 'react-native';
 
-import EventEmitter from "eventemitter3";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";
@@ -17,6 +16,7 @@ import Orientation from "react-native-orientation-locker";
 import colors from "../../config/colors";
 import constants from "../../config/constants";
 
+import EventEmitter from "../atoms/EventEmitter"
 import MainBar from "../templates/MainBar";
 
 export default function HomeScreen(props) {
@@ -28,7 +28,6 @@ export default function HomeScreen(props) {
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
 	const [screenHeight, setScreenHeight] = useState(Dimensions.get("window").height);
 	const [orientation, setOrientation] = useState(Orientation.getInitialOrientation());
-	const eventEmitter = new EventEmitter();
 	
 	const buttonDim = Math.min(
 		Math.max(screenWidth, screenHeight)/(numOfRows+1),
@@ -50,7 +49,7 @@ export default function HomeScreen(props) {
 	};
 	
 	const handleUpdateIconButton = (imageName) => {
-		eventEmitter.emit(imageName);
+		EventEmitter.getEventEmitter().emit(imageName);
 	}
 	
 	const syncImage = (imageName, imageData) => {
@@ -130,7 +129,7 @@ export default function HomeScreen(props) {
 		});
 		
 		return () => {
-			eventEmitter.removeAllListeners();
+			EventEmitter.getEventEmitter().removeAllListeners();
 			dimListener.remove()
 			Orientation.removeAllListeners();
 		}
@@ -160,7 +159,6 @@ export default function HomeScreen(props) {
 				numOfCols={numOfCols}
 				numOfPages={numOfPages}
 				onIconButtonPress={handleIconButtonPress}
-				eventEmitter={eventEmitter}
 				screenWidth={screenWidth}
 				screenHeight={screenHeight}
 				buttonDim={buttonDim}

@@ -1,7 +1,4 @@
-import React, {
-	useEffect,
-	useState,
-	} from 'react';
+import React from 'react';
 import {
 	FlatList,
 	} from 'react-native';
@@ -11,15 +8,6 @@ import colors from "../../config/colors";
 import Grid from "../organisms/Grid";
 
 export default function MainBar(props) {
-	const [updateFlag, setUpdateFlag] = useState(Date.now());
-	
-	useEffect(() => {
-		props.eventEmitter.addListener("updateImage", () => {
-			setUpdateFlag(Date.now());
-			console.log("flag updated");
-		});
-	}, []);
-	
 	const data = []
 	for (let i=1; i<=props.numOfPages; i++) {
 		data.push({pageNumber:i.toString()});
@@ -32,7 +20,6 @@ export default function MainBar(props) {
 				numOfRows={props.numOfRows}
 				numOfCols={props.numOfCols}
 				onPress={props.onIconButtonPress}
-				eventEmitter={props.eventEmitter}
 				buttonDim={props.buttonDim}
 				orientation={props.orientation}
 				screenWidth={props.screenWidth}

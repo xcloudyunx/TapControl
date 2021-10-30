@@ -30,7 +30,6 @@ export default function Row(props) {
 						col={j.toString()}
 						buttonDim={props.buttonDim}
 						onPress={props.onPress}
-						eventEmitter={props.eventEmitter}
 					/>
 				)
 			})}
