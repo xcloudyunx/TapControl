@@ -28,6 +28,7 @@ export default function Grid(props) {
 						buttonDim={props.buttonDim}
 						onPress={props.onPress}
 						eventEmitter={props.eventEmitter}
+						orientation={props.orientation}
 					/>
 				)
 			})}

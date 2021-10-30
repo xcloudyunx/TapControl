@@ -32,11 +32,9 @@ export default function IconButton(props) {
 	useEffect(() => {
 		updateIconButton();
 		
-		console.log("creating listener");
 		props.eventEmitter.addListener(props.page+"-"+props.row+"-"+props.col, () => {
 			updateIconButton();
 		});
-		console.log("listener created");
 	}, []);
 	
 	return (

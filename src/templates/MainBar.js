@@ -4,8 +4,6 @@ import React, {
 	} from 'react';
 import {
 	FlatList,
-	StyleSheet,
-	View,
 	} from 'react-native';
 
 import colors from "../../config/colors";
@@ -56,13 +54,3 @@ export default function MainBar(props) {
 		/>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		// backgroundColor: colors.transparent,
-		flexDirection: "row",
-	},
-	spacer: {
-		flex: 1,
-	}
-});
