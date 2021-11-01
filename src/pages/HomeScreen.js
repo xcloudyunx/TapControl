@@ -9,13 +9,14 @@ import {
 	} from 'react-native';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import TcpSocket from "react-native-tcp-socket";
+// import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";
 import Orientation from "react-native-orientation-locker";
 
 import colors from "../../config/colors";
-import constants from "../../config/constants";
+// import constants from "../../config/constants";
 
+import Client from "../atoms/Client"
 import EventEmitter from "../atoms/EventEmitter"
 import MainBar from "../templates/MainBar";
 
@@ -24,7 +25,7 @@ export default function HomeScreen(props) {
 	const [numOfCols, setNumOfCols] = useState();
 	const [numOfPages, setNumOfPages] = useState();
 	const [readyToRender, setReadyToRender] = useState(0);
-	const [clientGlobal, setClient] = useState();
+	const [client, setClient] = useState();
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
 	const [screenHeight, setScreenHeight] = useState(Dimensions.get("window").height);
 	const [orientation, setOrientation] = useState(Orientation.getInitialOrientation());
@@ -77,44 +78,57 @@ export default function HomeScreen(props) {
 	};
 	
 	useEffect(() => {
-		let readBuffer = "";
-		const client = TcpSocket.createConnection(
-			{
-				port: constants.PORT,
-				host: props.IP
-			},
-			() => {
-				client.setEncoding("utf8");
-				console.log("connected");
-				setClient(client);
-				fetchData("numOfRows", 4).then((r) => {
-					setNumOfRows(r);
-					fetchData("numOfCols", 2).then((c) => {
-						setNumOfCols(c);
-						fetchData("numOfPages", 1).then((p) => {
-							setNumOfPages(p);
-							setReadyToRender(1);
-						});
+		// let readBuffer = "";
+		// const client = TcpSocket.createConnection(
+			// {
+				// port: constants.PORT,
+				// host: props.IP
+			// },
+			// () => {
+				// client.setEncoding("utf8");
+				// console.log("connected");
+				// setClient(client);
+				// fetchData("numOfRows", 4).then((r) => {
+					// setNumOfRows(r);
+					// fetchData("numOfCols", 2).then((c) => {
+						// setNumOfCols(c);
+						// fetchData("numOfPages", 1).then((p) => {
+							// setNumOfPages(p);
+							// setReadyToRender(1);
+						// });
+					// });
+				// });
+			// }
+		// );
+		// client.on("data", (data) => {
+			// readBuffer += data;
+			// let splitIndex = readBuffer.indexOf("XXXXXX");
+			// if (splitIndex >= 0) {
+				// handleData(JSON.parse(readBuffer.substring(0, splitIndex)));
+				// readBuffer = readBuffer.substring(splitIndex+6);
+			// }
+		// });
+		// client.on("error", (error) => {
+			// console.log("error");
+			// console.log(error);
+			// props.onDisconnect();
+		// });
+		// client.on("close", () => {
+			// console.log("close");
+			// props.onDisconnect();
+		// });
+		setClient(new Client(props.IP, handleData, props.onDisconnect));
+		client.connected.then(() => {
+			fetchData("numOfRows", 4).then((r) => {
+				setNumOfRows(r);
+				fetchData("numOfCols", 2).then((c) => {
+					setNumOfCols(c);
+					fetchData("numOfPages", 1).then((p) => {
+						setNumOfPages(p);
+						setReadyToRender(1);
 					});
 				});
-			}
-		);
-		client.on("data", (data) => {
-			readBuffer += data;
-			let splitIndex = readBuffer.indexOf("XXXXXX");
-			if (splitIndex >= 0) {
-				handleData(JSON.parse(readBuffer.substring(0, splitIndex)));
-				readBuffer = readBuffer.substring(splitIndex+6);
-			}
-		});
-		client.on("error", (error) => {
-			console.log("error");
-			console.log(error);
-			props.onDisconnect();
-		});
-		client.on("close", () => {
-			console.log("close");
-			props.onDisconnect();
+			});
 		});
 		
 		Orientation.unlockAllOrientations();
