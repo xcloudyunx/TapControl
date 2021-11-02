@@ -4,12 +4,6 @@ import constants from "../../config/constants";
 
 class Client {
 	constructor(IP, handleData, onDisconnect) {
-		let pResolve, pReject;
-		this.connected = new Promise((resolve, reject) => {
-			pResolve = resolve;
-			pReject = reject;
-		});
-		
 		this.readBuffer = "";
 		this.client = TcpSocket.createConnection(
 			{
@@ -19,7 +13,6 @@ class Client {
 			() => {
 				this.client.setEncoding("utf8");
 				console.log("connected");
-				pResolve();
 			}
 		);
 		this.client.on("data", (data) => {
@@ -38,6 +31,10 @@ class Client {
 			console.log("close");
 			onDisconnect();
 		});
+	}
+	
+	write(message) {
+		this.client.write(message);
 	}
 }
 

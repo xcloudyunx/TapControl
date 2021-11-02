@@ -29,6 +29,7 @@ export default function HomeScreen(props) {
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
 	const [screenHeight, setScreenHeight] = useState(Dimensions.get("window").height);
 	const [orientation, setOrientation] = useState(Orientation.getInitialOrientation());
+	const [lastUpdateTime, setLastUpdateTime] = useState();
 	
 	const buttonDim = Math.min(
 		Math.max(screenWidth, screenHeight)/(numOfRows+1),
@@ -36,17 +37,24 @@ export default function HomeScreen(props) {
 	);
 	
 	const handleData = (data) => {
-		if (data.state) {
+		if (data.lastUpdateTime) {
+			checkSync(data.lastUpdateTime);
+		} else if (data.state) {
 			syncGrid(data.state);
 		} else if (data.imageName) {
 			syncImage(data.imageName, data.imageData);
 		}
 	};
 	
+	const checkSync = (time) => {
+		EventEmitter.getEventEmitter().emit("checkSync", time)
+	}
+	
 	const syncGrid = (state) => {
 		setNumOfRows(state.numOfRows);
 		setNumOfCols(state.numOfCols);
 		setNumOfPages(state.numOfPages);
+		setLastUpdateTime(state.lastUpdate);
 	};
 	
 	const handleUpdateIconButton = (imageName) => {
@@ -78,60 +86,30 @@ export default function HomeScreen(props) {
 	};
 	
 	useEffect(() => {
-		// let readBuffer = "";
-		// const client = TcpSocket.createConnection(
-			// {
-				// port: constants.PORT,
-				// host: props.IP
-			// },
-			// () => {
-				// client.setEncoding("utf8");
-				// console.log("connected");
-				// setClient(client);
-				// fetchData("numOfRows", 4).then((r) => {
-					// setNumOfRows(r);
-					// fetchData("numOfCols", 2).then((c) => {
-						// setNumOfCols(c);
-						// fetchData("numOfPages", 1).then((p) => {
-							// setNumOfPages(p);
-							// setReadyToRender(1);
-						// });
-					// });
-				// });
-			// }
-		// );
-		// client.on("data", (data) => {
-			// readBuffer += data;
-			// let splitIndex = readBuffer.indexOf("XXXXXX");
-			// if (splitIndex >= 0) {
-				// handleData(JSON.parse(readBuffer.substring(0, splitIndex)));
-				// readBuffer = readBuffer.substring(splitIndex+6);
-			// }
-		// });
-		// client.on("error", (error) => {
-			// console.log("error");
-			// console.log(error);
-			// props.onDisconnect();
-		// });
-		// client.on("close", () => {
-			// console.log("close");
-			// props.onDisconnect();
-		// });
-		setClient(new Client(props.IP, handleData, props.onDisconnect));
-		client.connected.then(() => {
-			fetchData("numOfRows", 4).then((r) => {
-				setNumOfRows(r);
-				fetchData("numOfCols", 2).then((c) => {
-					setNumOfCols(c);
-					fetchData("numOfPages", 1).then((p) => {
-						setNumOfPages(p);
-						setReadyToRender(1);
+		fetchData("numOfRows", 4).then((r) => {
+			setNumOfRows(r);
+			fetchData("numOfCols", 2).then((c) => {
+				setNumOfCols(c);
+				fetchData("numOfPages", 1).then((p) => {
+					setNumOfPages(p);
+					fetchData("lastUpdateTime", -1).then((t) => {
+						setLastUpdateTime(t);
+						setClient(new Client(props.IP, handleData, props.onDisconnect));
 					});
 				});
 			});
 		});
 		
 		Orientation.unlockAllOrientations();
+		
+		EventEmitter.getEventEmitter().addListener("checkSync", (time) => {
+			if (time != lastUpdateTime) {
+				client.write("0");
+			} else {
+				client.write("1");
+			}
+			setReadyToRender(1);
+		});
 		
 		const dimListener = Dimensions.addEventListener("change", () => {
 			setScreenWidth(Dimensions.get("window").width);
@@ -158,9 +136,12 @@ export default function HomeScreen(props) {
 	useEffect(() => {
 		storeData("numOfPages", numOfPages);
 	}, [numOfPages]);
+	useEffect(() => {
+		storeData("lastUpdateTime", lastUpdateTime);
+	}, [lastUpdateTime]);
 	
 	const handleIconButtonPress = (page, row, col) => {
-		clientGlobal.write(page+"-"+row+"-"+col);
+		client.write(page+"-"+row+"-"+col);
 	};
 	
 	return (
