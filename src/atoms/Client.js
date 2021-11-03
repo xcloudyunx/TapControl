@@ -3,38 +3,40 @@ import TcpSocket from "react-native-tcp-socket";
 import constants from "../../config/constants";
 
 class Client {
-	constructor(IP, handleData, onDisconnect) {
-		this.readBuffer = "";
-		this.client = TcpSocket.createConnection(
+	static client;
+	
+	static setup(IP, handleData, onDisconnect) {
+		let readBuffer = "";
+		client = TcpSocket.createConnection(
 			{
 				port: constants.PORT,
 				host: IP
 			},
 			() => {
-				this.client.setEncoding("utf8");
+				client.setEncoding("utf8");
 				console.log("connected");
 			}
 		);
-		this.client.on("data", (data) => {
-			this.readBuffer += data;
-			let splitIndex = this.readBuffer.indexOf("XXXXXX");
+		client.on("data", (data) => {
+			readBuffer += data;
+			let splitIndex = readBuffer.indexOf("XXXXXX");
 			if (splitIndex >= 0) {
 				handleData(JSON.parse(readBuffer.substring(0, splitIndex)));
-				this.readBuffer = this.readBuffer.substring(splitIndex+6);
+				readBuffer = readBuffer.substring(splitIndex+6);
 			}
 		});
-		this.client.on("error", (error) => {
+		client.on("error", (error) => {
 			console.log("error");
 			console.log(error);
 		});
-		this.client.on("close", () => {
+		client.on("close", () => {
 			console.log("close");
 			onDisconnect();
 		});
 	}
 	
-	write(message) {
-		this.client.write(message);
+	static getClient() {
+		return client;
 	}
 }
 

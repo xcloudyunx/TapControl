@@ -25,7 +25,6 @@ export default function HomeScreen(props) {
 	const [numOfCols, setNumOfCols] = useState();
 	const [numOfPages, setNumOfPages] = useState();
 	const [readyToRender, setReadyToRender] = useState(0);
-	const [client, setClient] = useState();
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
 	const [screenHeight, setScreenHeight] = useState(Dimensions.get("window").height);
 	const [orientation, setOrientation] = useState(Orientation.getInitialOrientation());
@@ -94,7 +93,7 @@ export default function HomeScreen(props) {
 					setNumOfPages(p);
 					fetchData("lastUpdateTime", -1).then((t) => {
 						setLastUpdateTime(t);
-						setClient(new Client(props.IP, handleData, props.onDisconnect));
+						Client.setup(props.IP, handleData, props.onDisconnect);
 					});
 				});
 			});
@@ -104,9 +103,9 @@ export default function HomeScreen(props) {
 		
 		EventEmitter.getEventEmitter().addListener("checkSync", (time) => {
 			if (time != lastUpdateTime) {
-				client.write("0");
+				Client.getClient().write("0");
 			} else {
-				client.write("1");
+				Client.getClient().write("1");
 			}
 			setReadyToRender(1);
 		});
@@ -141,7 +140,7 @@ export default function HomeScreen(props) {
 	}, [lastUpdateTime]);
 	
 	const handleIconButtonPress = (page, row, col) => {
-		client.write(page+"-"+row+"-"+col);
+		Client.getClient().write(page+"-"+row+"-"+col);
 	};
 	
 	return (
