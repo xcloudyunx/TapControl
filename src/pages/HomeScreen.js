@@ -46,7 +46,15 @@ export default function HomeScreen(props) {
 	};
 	
 	const checkSync = (time) => {
-		EventEmitter.getEventEmitter().emit("checkSync", time)
+		fetchData("lastUpdateTime", -1).then((t) => {
+			setLastUpdateTime(t);
+			if (time != t) {
+				Client.getClient().write("0");
+			} else {
+				Client.getClient().write("1");
+			}
+			setReadyToRender(1);
+		});			
 	}
 	
 	const syncGrid = (state) => {
@@ -91,24 +99,12 @@ export default function HomeScreen(props) {
 				setNumOfCols(c);
 				fetchData("numOfPages", 1).then((p) => {
 					setNumOfPages(p);
-					fetchData("lastUpdateTime", -1).then((t) => {
-						setLastUpdateTime(t);
-						Client.setup(props.IP, handleData, props.onDisconnect);
-					});
+					Client.setup(props.IP, handleData, props.onDisconnect);
 				});
 			});
 		});
 		
 		Orientation.unlockAllOrientations();
-		
-		EventEmitter.getEventEmitter().addListener("checkSync", (time) => {
-			if (time != lastUpdateTime) {
-				Client.getClient().write("0");
-			} else {
-				Client.getClient().write("1");
-			}
-			setReadyToRender(1);
-		});
 		
 		const dimListener = Dimensions.addEventListener("change", () => {
 			setScreenWidth(Dimensions.get("window").width);
