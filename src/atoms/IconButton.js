@@ -15,6 +15,7 @@ import colors from "../../config/colors";
 import constants from "../../config/constants";
 
 import EventEmitter from "./EventEmitter";
+import Client from "./Client"
 
 export default function IconButton(props) {
 	const [source, setSource] = useState(null);
@@ -38,6 +39,10 @@ export default function IconButton(props) {
 		});
 	}, []);
 	
+	const handleIconButtonPress = () => {
+		Client.getClient().write(props.page+"-"+props.row+"-"+props.col);
+	};
+	
 	return (
 		<View style={{
 			width: props.buttonDim,
@@ -45,7 +50,7 @@ export default function IconButton(props) {
 		}}>
 			<TouchableHighlight
 				style={[styles.touch, {borderRadius: props.buttonDim/8}]}
-				onPress={() => {props.onPress(props.page, props.row, props.col)}}
+				onPress={handleIconButtonPress}
 			>
 				<View style={[styles.button, {borderRadius: props.buttonDim/8}]}>
 					<Image

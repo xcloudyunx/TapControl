@@ -26,7 +26,6 @@ export default function Grid(props) {
 						row={i.toString()}
 						numOfCols={props.numOfCols}
 						buttonDim={props.buttonDim}
-						onPress={props.onPress}
 						orientation={props.orientation}
 					/>
 				)

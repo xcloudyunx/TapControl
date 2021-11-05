@@ -9,12 +9,10 @@ import {
 	} from 'react-native';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import TcpSocket from "react-native-tcp-socket";
 import RNFS from "react-native-fs";
 import Orientation from "react-native-orientation-locker";
 
 import colors from "../../config/colors";
-// import constants from "../../config/constants";
 
 import Client from "../atoms/Client"
 import EventEmitter from "../atoms/EventEmitter"
@@ -135,17 +133,12 @@ export default function HomeScreen(props) {
 		storeData("lastUpdateTime", lastUpdateTime);
 	}, [lastUpdateTime]);
 	
-	const handleIconButtonPress = (page, row, col) => {
-		Client.getClient().write(page+"-"+row+"-"+col);
-	};
-	
 	return (
 		<View style={styles.container}>
 			{readyToRender ? <MainBar
 				numOfRows={numOfRows}
 				numOfCols={numOfCols}
 				numOfPages={numOfPages}
-				onIconButtonPress={handleIconButtonPress}
 				screenWidth={screenWidth}
 				screenHeight={screenHeight}
 				buttonDim={buttonDim}

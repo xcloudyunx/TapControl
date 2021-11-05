@@ -36,7 +36,6 @@ export default function MainBar(props) {
 				page={item.pageNumber}
 				numOfRows={props.numOfRows}
 				numOfCols={props.numOfCols}
-				onPress={props.onIconButtonPress}
 				buttonDim={props.buttonDim}
 				orientation={props.orientation}
 				screenWidth={props.screenWidth}
