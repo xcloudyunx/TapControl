@@ -34,6 +34,7 @@ export default function HomeScreen(props) {
 	);
 	
 	const handleData = (data) => {
+		console.log(data);
 		if (data.lastUpdateTime) {
 			checkSync(data.lastUpdateTime);
 		} else if (data.state) {
