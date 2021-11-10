@@ -20,9 +20,10 @@ class Client {
 		client.on("data", (data) => {
 			readBuffer += data;
 			let splitIndex = readBuffer.indexOf(constants.EOF);
-			if (splitIndex >= 0) {
+			while (splitIndex >= 0) {
 				handleData(JSON.parse(readBuffer.substring(0, splitIndex)));
 				readBuffer = readBuffer.substring(splitIndex+constants.EOF.length);
+				splitIndex = readBuffer.indexOf(constants.EOF)
 			}
 		});
 		client.on("error", (error) => {
