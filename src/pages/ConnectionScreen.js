@@ -12,6 +12,7 @@ import {
 	} from 'react-native';
 	
 import Orientation from "react-native-orientation-locker";
+import KeepAwake from "react-native-keep-awake";
 
 import colors from "../../config/colors";
 
@@ -21,6 +22,7 @@ import Scanner from "../atoms/Scanner";
 export default function ConnectionScreen(props) {
 	useEffect(() => {
 		Orientation.lockToPortrait();
+		KeepAwake.deactivate();
 	}, []);
 	
 	return (

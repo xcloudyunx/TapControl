@@ -11,6 +11,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNFS from "react-native-fs";
 import Orientation from "react-native-orientation-locker";
+import KeepAwake from "react-native-keep-awake";
 
 import colors from "../../config/colors";
 
@@ -104,6 +105,7 @@ export default function HomeScreen(props) {
 		});
 		
 		Orientation.unlockAllOrientations();
+		KeepAwake.activate();
 		
 		const dimListener = Dimensions.addEventListener("change", () => {
 			setScreenWidth(Dimensions.get("window").width);
