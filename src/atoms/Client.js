@@ -34,6 +34,11 @@ class Client {
 			console.log("close");
 			onDisconnect();
 		});
+		
+		setTimeout(() => {
+			console.log("can't connect");
+			client.end()
+		}, 1000)
 	}
 	
 	static getClient() {
