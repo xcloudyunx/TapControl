@@ -6,6 +6,13 @@ class Client {
 	static client;
 	
 	static setup(IP, handleData, onDisconnect) {
+		const timeout = setTimeout(() => {
+			// add error message for user?
+			alert("Please check that you are on the same WiFi network.")
+			console.log("can't connect");
+			client.end()
+		}, 1000);
+		
 		let readBuffer = "";
 		client = TcpSocket.createConnection(
 			{
@@ -13,6 +20,7 @@ class Client {
 				host: IP
 			},
 			() => {
+				clearTimeout(timeout);
 				client.setEncoding("utf8");
 				console.log("connected");
 			}
@@ -27,6 +35,8 @@ class Client {
 			}
 		});
 		client.on("error", (error) => {
+			clearTimeout(timeout);
+			alert("An error has occured.")
 			console.log("error");
 			console.log(error);
 		});
@@ -34,11 +44,6 @@ class Client {
 			console.log("close");
 			onDisconnect();
 		});
-		
-		setTimeout(() => {
-			console.log("can't connect");
-			client.end()
-		}, 1000)
 	}
 	
 	static getClient() {
