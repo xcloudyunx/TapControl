@@ -8,7 +8,7 @@ class Client {
 	static setup(IP, handleData, onDisconnect) {
 		const timeout = setTimeout(() => {
 			// add error message for user?
-			alert("Please check that you are on the same WiFi network.")
+			alert("An error has occured.")
 			console.log("can't connect");
 			client.end()
 		}, 1000);
