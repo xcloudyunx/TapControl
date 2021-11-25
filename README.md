@@ -17,3 +17,5 @@ require react-native-fs
 require react-native-orientation-locker
 
 require eventemitter3
+
+require react-native-qrcode-scanner (react-native-camera, react-native-permissions)

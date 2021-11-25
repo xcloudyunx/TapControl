@@ -25,28 +25,47 @@ export default function ConnectionScreen(props) {
 		KeepAwake.deactivate();
 	}, []);
 	
+	// return (
+		// <TouchableWithoutFeedback
+			// onPress={Keyboard.dismiss}
+		// >
+			// <View
+			// style={styles.container}
+			// >
+				// <Header
+					// value="SCAN QR CODE TO CONNECT"
+				// />
+				// <Scanner 
+					// onScan={props.onChangeIP}
+				// />
+				// <TextInput
+					// style={styles.input}
+					// value={props.IP}
+					// onChangeText={props.onChangeIP}
+					// onSubmitEditing={props.onSubmitIP}
+					// placeholder="OR ENTER IP ADDRESS MANUALLY"
+					// placeholderTextColor={colors.white}
+					// keyboardType="numeric"
+				// />
+			// </View>
+		// </TouchableWithoutFeedback>
+	// );
 	return (
-		<TouchableWithoutFeedback
-			onPress={Keyboard.dismiss}
+		<View
+		style={styles.container}
 		>
+			<Header
+				value="SCAN QR CODE TO CONNECT"
+				style={styles.header}
+			/>
+			<Scanner 
+				onScan={props.onChangeIP}
+				style={styles.scanner}
+			/>
 			<View
-			style={styles.container}
-			>
-				<Header
-					value="SCAN QR CODE TO CONNECT"
-				/>
-				<Scanner />
-				<TextInput
-					style={styles.input}
-					value={props.IP}
-					onChangeText={props.onChangeIP}
-					onSubmitEditing={props.onSubmitIP}
-					placeholder="OR ENTER IP ADDRESS MANUALLY"
-					placeholderTextColor={colors.white}
-					keyboardType="numeric"
-				/>
-			</View>
-		</TouchableWithoutFeedback>
+				style={styles.spacer}
+			/>
+		</View>
 	);
 };
 
@@ -57,11 +76,21 @@ const styles = StyleSheet.create({
 		justifyContent: "space-evenly",
 		alignItems: "center",
 	},
-	input: {
-		color: colors.white,
-		borderWidth: 1,
-		borderColor: colors.white,
-		textAlign: "center",
-		width: "90%",
+	header: {
+		flex: 3,
+		justifyContent: "flex-end",
 	},
+	scanner: {
+		flex: 14,
+	},
+	spacer: {
+		flex: 2,
+	}
+	// input: {
+		// color: colors.white,
+		// borderWidth: 1,
+		// borderColor: colors.white,
+		// textAlign: "center",
+		// width: "90%",
+	// },
 });
