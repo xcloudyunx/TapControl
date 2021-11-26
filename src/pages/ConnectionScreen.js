@@ -25,47 +25,36 @@ export default function ConnectionScreen(props) {
 		KeepAwake.deactivate();
 	}, []);
 	
-	// return (
-		// <TouchableWithoutFeedback
-			// onPress={Keyboard.dismiss}
-		// >
-			// <View
-			// style={styles.container}
-			// >
-				// <Header
-					// value="SCAN QR CODE TO CONNECT"
-				// />
-				// <Scanner 
-					// onScan={props.onChangeIP}
-				// />
-				// <TextInput
-					// style={styles.input}
-					// value={props.IP}
-					// onChangeText={props.onChangeIP}
-					// onSubmitEditing={props.onSubmitIP}
-					// placeholder="OR ENTER IP ADDRESS MANUALLY"
-					// placeholderTextColor={colors.white}
-					// keyboardType="numeric"
-				// />
-			// </View>
-		// </TouchableWithoutFeedback>
-	// );
 	return (
-		<View
-		style={styles.container}
+		<TouchableWithoutFeedback
+			onPress={Keyboard.dismiss}
 		>
-			<Header
-				value="SCAN QR CODE TO CONNECT"
-				style={styles.header}
-			/>
-			<Scanner 
-				onScan={props.onChangeIP}
-				style={styles.scanner}
-			/>
 			<View
-				style={styles.spacer}
-			/>
-		</View>
+				style={styles.container}
+			>
+				<Header
+					value="SCAN QR CODE TO CONNECT"
+					style={styles.header}
+				/>
+				<Scanner 
+					onScan={props.onChangeIP}
+					style={styles.scanner}
+				/>
+				<View
+					style={styles.inputContainer}
+				>
+					<TextInput
+						style={styles.input}
+						value={props.IP}
+						onChangeText={props.onChangeIP}
+						onSubmitEditing={props.onSubmitIP}
+						placeholder="OR ENTER IP ADDRESS MANUALLY"
+						placeholderTextColor={colors.white}
+						keyboardType="numeric"
+					/>
+				</View>
+			</View>
+		</TouchableWithoutFeedback>
 	);
 };
 
@@ -73,24 +62,24 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: colors.black,
 		flex: 1,
-		justifyContent: "space-evenly",
+		justifyContent: "space-around",
 		alignItems: "center",
 	},
 	header: {
-		flex: 3,
+		flex: 1,
 		justifyContent: "flex-end",
 	},
-	scanner: {
-		flex: 14,
+	input: {
+		color: colors.white,
+		borderWidth: 1,
+		borderColor: colors.white,
+		textAlign: "center",
 	},
-	spacer: {
-		flex: 2,
-	}
-	// input: {
-		// color: colors.white,
-		// borderWidth: 1,
-		// borderColor: colors.white,
-		// textAlign: "center",
-		// width: "90%",
-	// },
+	inputContainer: {
+		flex: 1,
+		width: "90%",
+	},
+	scanner: {
+		flex: 4,
+	},
 });
